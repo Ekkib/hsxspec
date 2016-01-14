@@ -23,7 +23,7 @@ Changelog
 
 Copyright (c) 2006-2015 Ekkehard Pofahl
 
-https://creativecommons.org/licenses/by-nc/3.0/de/
+Web-Referenz :     https://creativecommons.org/licenses/by-nc/3.0/de/
 
 Lizenz: CC BY-NC 3.0
 
