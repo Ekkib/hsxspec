@@ -21,9 +21,9 @@ Changelog
 
 
 
-Copyright (c) 2006-2015 Ekkehard Pofahl
+Copyright (c) 2006-2016 Ekkehard Pofahl
 
-https://creativecommons.org/licenses/by-nc/3.0/de/
+Web Adresse der Lizenz   https://creativecommons.org/licenses/by-nc/3.0/de/
 
 Lizenz: CC BY-NC 3.0
 
