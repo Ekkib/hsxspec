@@ -4,7 +4,7 @@ HSX Spezifikation   HSX_Spec
 Dieses Programm (geschrieben in Lazarus) dient zunächst allein dem Zweck, eine Benutzerschnittstelle für die 
 Heizungssteuerung HSX zu entwickeln.
 
-aktuelle Version: 20160114
+aktuelle Version: 20160115
 
 Dokumentation des HSX Projektes :  https://sites.google.com/site/raspihs1/
 
@@ -15,7 +15,7 @@ Dokumentation des HSX Projektes :  https://sites.google.com/site/raspihs1/
 - Verbesserung 1
 - Verbesserung 2
 
-# 20160114
+# 20160115
 
 - Erste Version bei github 
 
