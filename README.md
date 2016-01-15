@@ -23,7 +23,9 @@ Dokumentation des HSX Projektes :  https://sites.google.com/site/raspihs1/
 
 Copyright (c) 2006-2016 Ekkehard Pofahl
 
-# Lizenz: CC BY-NC 3.0 , Web Adresse der Lizenz   https://creativecommons.org/licenses/by-nc/3.0/de/
+# Lizenz: CC BY-NC 3.0
+
+Web Adresse der Lizenz : https://creativecommons.org/licenses/by-nc/3.0/de/
 
 Sie dürfen das Werk bzw. den Inhalt vervielfältigen, verbreiten und öffentlich zugänglich machen, Abwandlungen 
 und Bearbeitungen des Werkes bzw. Inhaltes anfertigen zu den folgenden Bedingungen:
