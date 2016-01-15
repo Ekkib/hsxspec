@@ -1,0 +1,80 @@
+object Form3: TForm3
+  Left = 1017
+  Height = 285
+  Top = 175
+  Width = 387
+  Caption = 'Form3'
+  ClientHeight = 285
+  ClientWidth = 387
+  OnShow = FormShow
+  LCLVersion = '1.2.6.0'
+  object RadioGroup1: TRadioGroup
+    Left = 96
+    Height = 193
+    Top = 72
+    Width = 185
+    AutoFill = True
+    Caption = 'RadioGroup1'
+    ChildSizing.LeftRightSpacing = 6
+    ChildSizing.EnlargeHorizontal = crsHomogenousChildResize
+    ChildSizing.EnlargeVertical = crsHomogenousChildResize
+    ChildSizing.ShrinkHorizontal = crsScaleChilds
+    ChildSizing.ShrinkVertical = crsScaleChilds
+    ChildSizing.Layout = cclLeftToRightThenTopToBottom
+    ChildSizing.ControlsPerLine = 1
+    ClientHeight = 175
+    ClientWidth = 181
+    Items.Strings = (
+      'a'
+      'b'
+      'c'
+      'd'
+      'e'
+      'f'
+      'g'
+    )
+    OnClick = RadioGroup1Click
+    TabOrder = 0
+  end
+  object Label1: TLabel
+    Left = 66
+    Height = 13
+    Top = 17
+    Width = 31
+    Caption = 'Label1'
+    ParentColor = False
+  end
+  object wahl_ok: TButton
+    Left = 310
+    Height = 25
+    Top = 240
+    Width = 75
+    Caption = 'wahl_ok'
+    OnClick = wahl_okClick
+    TabOrder = 1
+  end
+  object Edit1: TEdit
+    Left = 168
+    Height = 21
+    Top = 8
+    Width = 152
+    TabOrder = 2
+    Text = 'Edit1'
+  end
+  object Edit2: TEdit
+    Left = 168
+    Height = 21
+    Top = 32
+    Width = 152
+    TabOrder = 3
+    Text = 'Edit2'
+  end
+  object Edit3: TEdit
+    Left = 303
+    Height = 21
+    Top = 74
+    Width = 80
+    TabOrder = 4
+    Text = 'Edit3'
+  end
+end

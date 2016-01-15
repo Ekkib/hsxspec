@@ -1,0 +1,100 @@
+object Form4: TForm4
+  Left = 1225
+  Height = 491
+  Top = 296
+  Width = 331
+  Caption = 'Form4'
+  ClientHeight = 491
+  ClientWidth = 331
+  OnActivate = FormActivate
+  LCLVersion = '1.2.6.0'
+  object Namen_Programm: TMemo
+    Left = 88
+    Height = 160
+    Top = 40
+    Width = 150
+    Lines.Strings = (
+      'Hier stehen'
+      'die Namen für '
+      'die verschiedenen'
+      'Programme.'
+      'Wird Defaultmässig gefüllt'
+      'und per Inifile '
+      'gepflegt.'
+    )
+    TabOrder = 0
+  end
+  object Label1: TLabel
+    Left = 24
+    Height = 13
+    Top = 15
+    Width = 144
+    Caption = 'Namen für die Heizprogramme'
+    ParentColor = False
+  end
+  object Label2: TLabel
+    Left = 24
+    Height = 13
+    Top = 224
+    Width = 174
+    Caption = 'Namen für die verschiedenen Regler'
+    ParentColor = False
+  end
+  object Namen_Regler: TMemo
+    Left = 88
+    Height = 160
+    Top = 248
+    Width = 150
+    Lines.Strings = (
+      'Wohnzimmer'
+      'Wintergarten'
+      'Heizkörper'
+      'Warmwasser'
+      '*> Wohnzimmer'
+      'und so weiter'
+      '....'
+    )
+    TabOrder = 1
+  end
+  object Aenderungen_uebernehmen: TButton
+    Left = 24
+    Height = 25
+    Top = 440
+    Width = 177
+    Caption = 'Aenderungen_uebernehmen'
+    OnClick = Aenderungen_uebernehmenClick
+    TabOrder = 2
+  end
+  object Dummylines: TMemo
+    Left = 24
+    Height = 162
+    Top = 248
+    Width = 48
+    Lines.Strings = (
+      'Du'
+      'ad'
+      'af'
+      'ad'
+      'gy'
+      'ad'
+      'da'
+    )
+    TabOrder = 3
+  end
+  object Dummylines1: TMemo
+    Left = 24
+    Height = 162
+    Top = 38
+    Width = 48
+    Lines.Strings = (
+      'Du'
+      'ad'
+      'af'
+      'ad'
+      'gy'
+      'ad'
+      'da'
+    )
+    TabOrder = 4
+  end
+end
