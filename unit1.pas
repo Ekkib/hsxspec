@@ -1,6 +1,6 @@
 unit Unit1;
 
-// quick & dirty, schön kommt irgendwann später, :-)
+// quick & dirty. Schön kommt irgendwann später, :-)
 
 {$mode objfpc}{$H+}
 
