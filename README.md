@@ -2,7 +2,7 @@
 HSX Spezifikation   HSX_Spec
 
 Dieses Programm (geschrieben in Lazarus) dient zunächst allein dem Zweck, eine Benutzerschnittstelle für die 
-Heizungssteuerung HSX zu entwickeln.
+Heizungssteuerung HSX zu entwickeln. Ein "rapid prototype".
 
 aktuelle Version: 20160115
 
