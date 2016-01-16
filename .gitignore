@@ -11,6 +11,8 @@
 *.or
 *.a
 *.ini
+
+# Sonstiges :
 *.zip
 *.exe
 
