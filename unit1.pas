@@ -10,7 +10,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
 
-const Version    = 'HSX_spec 20160115' ;  lizenz_text =
+const Version    = 'HSX_spec 20160116' ;  lizenz_text =
 
  'Heizungssteuerung HSX mit 1-Wire Temperatur-Sensoren'          + #13 + #13 +
  'Version : ' + version                                          + #13 + #13 +
@@ -65,7 +65,10 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    Alles_Speichern: TButton;
+    Debug_Flag: TCheckBox;
     Edit2: TEdit;
+    Info_ueber_Aggregate: TLabel;
     Sichere_Regeln: TButton;
     Tagesregel: TButton;
     Erstelle_Regeln: TButton;

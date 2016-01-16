@@ -72,6 +72,7 @@ type
     procedure CheckBox6Change(Sender: TObject);
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
     procedure M10Click(Sender: TObject);
     procedure P10Click(Sender: TObject);
     procedure Panel3Click(Sender: TObject);
@@ -184,6 +185,11 @@ begin
 end;
 
 procedure TForm2.ComboBox2Change(Sender: TObject);
+begin
+
+end;
+
+procedure TForm2.FormCreate(Sender: TObject);
 begin
 
 end;
