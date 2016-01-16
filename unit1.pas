@@ -187,6 +187,7 @@ procedure TForm1.EndeClick(Sender: TObject);
 begin
       close ;
 end;
+
 function ExtractFileName_ohneExtension (voller_Name : string) : string;
 var fn : string ;
 begin
