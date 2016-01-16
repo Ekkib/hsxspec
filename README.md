@@ -8,6 +8,8 @@ aktuelle Version: 20160115
 
 Dokumentation des HSX Projektes :  https://sites.google.com/site/raspihs1/
 
+Dort gibt es auch auch Links zu Windows und Raspi Executables, im Verzeichnis "Spezifikation.
+
 # Changelog
 
 # 2016....
