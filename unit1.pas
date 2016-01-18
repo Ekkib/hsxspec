@@ -10,7 +10,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
 
-const Version    = 'HSX_spec 20160116' ;  lizenz_text =
+const Version    = 'HSX_spec 20160118' ;  lizenz_text =
 
  'Heizungssteuerung HSX mit 1-Wire Temperatur-Sensoren'          + #13 + #13 +
  'Version : ' + version                                          + #13 + #13 +
@@ -69,7 +69,6 @@ type
     Debug_Flag: TCheckBox;
     Edit2: TEdit;
     Info_ueber_Aggregate: TLabel;
-    Sichere_Regeln: TButton;
     Tagesregel: TButton;
     Erstelle_Regeln: TButton;
     Einstellungen: TButton;
@@ -95,15 +94,18 @@ type
     Sonntag: TLabel;
     Memo1: TMemo;
     Timer1: TTimer;
+    procedure Alles_SpeichernClick(Sender: TObject);
     procedure Erstelle_RegelnClick(Sender: TObject);
-    procedure Calendar1Change(Sender: TObject);
     procedure Calendar1DblClick(Sender: TObject);
     procedure EinstellungenClick(Sender: TObject);
     procedure EndeClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
+    procedure HeizprogrammeClick(Sender: TObject);
+    procedure HeizprogrammeSelectionChanged(Sender: TObject);
     procedure Hello_WorldClick(Sender: TObject);
     procedure P_LadenClick(Sender: TObject);
+    procedure Sichere_RegelnClick(Sender: TObject);
     procedure TagesregelClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
 
@@ -207,6 +209,7 @@ begin
 
   iniFile.WriteString ('Allgemeine_Infos', 'Programmversion', Version ) ;
 
+  // Demnächst auch variabel ! :-)
   // Name_Regler
 
   N_Regler [1] := cre_ini_string ('Name_Regler', 'nr_1', 'RWohnzimmer');
@@ -225,8 +228,8 @@ begin
   N_Programm [3] := cre_ini_string ('Name_Programm', 'np_3', 'PUrlaub');
   N_Programm [4] := cre_ini_string ('Name_Programm', 'np_4', 'PSauna');
   N_Programm [5] := cre_ini_string ('Name_Programm', 'np_5', 'PFrostschutz');
-  N_Programm [6] := cre_ini_string ('Name_Programm', 'np_6', 'Programm 1');
-  N_Programm [7] := cre_ini_string ('Name_Programm', 'np_7', 'Programm 2');
+  N_Programm [6] := cre_ini_string ('Name_Programm', 'np_6', 'Programm_1');
+  N_Programm [7] := cre_ini_string ('Name_Programm', 'np_7', 'Programm_2');
 
   // Readsection
 
@@ -237,6 +240,17 @@ begin
        P_Laden.Click;
        Erstelle_Regeln.Click;
        Tagesregel.Click;
+       P_Laden.Click; // Kein Doppelmoppel : Regeln müssen erst erstellt werden
+end;
+
+procedure TForm1.HeizprogrammeClick(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.HeizprogrammeSelectionChanged(Sender: TObject);
+begin
+
 end;
 
 
@@ -309,10 +323,16 @@ begin
 
 end;
 
-procedure TForm1.Calendar1Change(Sender: TObject);
+procedure TForm1.Alles_SpeichernClick(Sender: TObject);
 begin
+      regel_i [1] . Sichern.click ;
+      regel_i [2] . Sichern.click  ;
+      regel_i [3] . Sichern.click  ;
+      regel_i [4] . Sichern.click  ;
 
 end;
+
+
 
 procedure TForm1.Calendar1DblClick(Sender: TObject);
 begin
@@ -333,9 +353,11 @@ begin
 end;
 
 procedure TForm1.P_LadenClick(Sender: TObject);
+var Old_index : Integer ;
 begin
 
   unit1.form1.inifile.ReadSection('Name_Programm' , Memo1.Lines );
+  Old_index := Heizprogramme.ItemIndex ;
   Heizprogramme.Items.Clear;
   for li := 1 to Memo1.Lines.Count do
       Heizprogramme.Items.AddText (unit1.form1.inifile.ReadString
@@ -361,6 +383,24 @@ begin
   Combobox6.ItemIndex:= 1 ;
   Combobox7.ItemIndex:= 1 ;   // Sonntag
 
+  if Old_index > Heizprogramme.Items.Count then Old_index := 0 ;
+
+  Heizprogramme.ItemIndex := Old_index;
+
+   if Regeln_erstellt then begin
+      if heizprogramme.itemindex < 0 then heizprogramme.itemindex := 0 ;  // ?
+      regel_i [1] . Laden.click ;
+      regel_i [2] . Laden.click  ;
+      regel_i [3] . Laden.click  ;
+      regel_i [4] . Laden.click  ;
+  end ;
+
+
+end;
+
+procedure TForm1.Sichere_RegelnClick(Sender: TObject);
+begin
+
 end;
 
 Function TForm1.Pindex (pdate : TDateTime) : Integer  ;
@@ -378,13 +418,15 @@ begin
 end;
 
 
+var Altes_Programm : Integer ;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
 begin
   inc (i1) ;
   edit1.text := IntToStr (i1) ;
   edit2.Text := DateTimeToStr (now)  ;
-  if i1 > 3 then begin
+
+  if i1 > 3 then begin   // nach 3 Sekunden sollte alles eingeschwungen sein
     regel_i [1] . dec_tfi ;
     regel_i [2] . dec_tfi ;
     regel_i [3] . dec_tfi ;
@@ -395,7 +437,11 @@ begin
     regel_i [3] . berechne_gueltig ;
     regel_i [4] . berechne_gueltig ;
 
+    if Altes_Programm <> Heizprogramme.ItemIndex then P_Laden.Click ;
+
   end;
+
+  Altes_Programm := Heizprogramme.ItemIndex ;
 
 end;
 

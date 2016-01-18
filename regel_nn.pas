@@ -73,6 +73,7 @@ type
     procedure ComboBox1Change(Sender: TObject);
     procedure ComboBox2Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure LadenClick(Sender: TObject);
     procedure M10Click(Sender: TObject);
     procedure P10Click(Sender: TObject);
     procedure Panel3Click(Sender: TObject);
@@ -129,7 +130,7 @@ begin
   unit1.form1.IniFile.WriteInteger( psec, 'width', TForm (self).width ) ;
   unit1.form1.IniFile.WriteInteger( psec, 'height',TForm (self).height ) ;
 
-
+  unit1.form1.IniFile.WriteBool (psec, 'aktiv', aktiv.checked );
   // close ;
 end;
 
@@ -191,6 +192,21 @@ end;
 
 procedure TForm2.FormCreate(Sender: TObject);
 begin
+
+end;
+
+procedure TForm2.LadenClick(Sender: TObject);
+  var psec : string ;
+begin
+  psec := unit1.Form1.Heizprogramme.Items
+                             [unit1.Form1.Heizprogramme.ItemIndex]
+                              + '_' + TForm (self).Caption   ;
+
+  TForm (self).top    := unit1.form1.IniFile.ReadInteger( psec, 'top',   TForm (self).top   ) ;
+  TForm (self).left   := unit1.form1.IniFile.ReadInteger( psec, 'left',  TForm (self).left  ) ;
+  TForm (self).width  := unit1.form1.IniFile.ReadInteger( psec, 'width', TForm (self).width ) ;
+  TForm (self).height := unit1.form1.IniFile.ReadInteger( psec, 'height',TForm (self).height ) ;
+  aktiv.checked       := unit1.form1.IniFile.ReadBool (psec, 'aktiv', false );
 
 end;
 

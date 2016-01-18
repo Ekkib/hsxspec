@@ -1,13 +1,13 @@
 object Form4: TForm4
-  Left = 1225
+  Left = 1082
   Height = 491
-  Top = 296
+  Top = 354
   Width = 331
   Caption = 'Form4'
   ClientHeight = 491
   ClientWidth = 331
   OnActivate = FormActivate
-  LCLVersion = '1.2.6.0'
+  LCLVersion = '1.4.4.0'
   object Namen_Programm: TMemo
     Left = 88
     Height = 160

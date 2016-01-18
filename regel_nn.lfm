@@ -1,17 +1,17 @@
 object Form2: TForm2
   Left = 253
-  Height = 608
+  Height = 671
   Top = 306
-  Width = 738
+  Width = 858
   Caption = 'Form2'
-  ClientHeight = 608
-  ClientWidth = 738
+  ClientHeight = 671
+  ClientWidth = 858
   OnCreate = FormCreate
   LCLVersion = '1.4.4.0'
   object Panel5: TPanel
-    Left = 16
+    Left = 21
     Height = 312
-    Top = 8
+    Top = 32
     Width = 584
     ClientHeight = 312
     ClientWidth = 584
@@ -20,7 +20,7 @@ object Form2: TForm2
     object ComboBox2: TComboBox
       Left = 16
       Height = 21
-      Top = 10
+      Top = 16
       Width = 160
       ItemHeight = 13
       Items.Strings = (
@@ -37,7 +37,7 @@ object Form2: TForm2
     object ComboBox3: TComboBox
       Left = 16
       Height = 21
-      Top = 42
+      Top = 48
       Width = 160
       ItemHeight = 13
       Items.Strings = (
@@ -54,10 +54,10 @@ object Form2: TForm2
       Left = 16
       Height = 96
       Top = 192
-      Width = 536
+      Width = 544
       BorderWidth = 3
       ClientHeight = 96
-      ClientWidth = 536
+      ClientWidth = 544
       ParentColor = False
       TabOrder = 2
       OnClick = Panel6Click
@@ -162,9 +162,9 @@ object Form2: TForm2
     end
   end
   object Sichern: TButton
-    Left = 32
+    Left = 24
     Height = 25
-    Top = 448
+    Top = 0
     Width = 75
     Caption = 'Sichern'
     OnClick = SichernClick
@@ -173,7 +173,7 @@ object Form2: TForm2
   object Edit1: TEdit
     Left = 432
     Height = 21
-    Top = 432
+    Top = 504
     Width = 80
     OnChange = Edit1Change
     TabOrder = 1
@@ -182,7 +182,7 @@ object Form2: TForm2
   object Label1: TLabel
     Left = 340
     Height = 13
-    Top = 344
+    Top = 416
     Width = 31
     Caption = 'Label1'
     ParentColor = False
@@ -190,7 +190,7 @@ object Form2: TForm2
   object sStunde: TLabel
     Left = 324
     Height = 13
-    Top = 368
+    Top = 440
     Width = 39
     Caption = 'sStunde'
     ParentColor = False
@@ -198,7 +198,7 @@ object Form2: TForm2
   object sMinute: TLabel
     Left = 380
     Height = 13
-    Top = 368
+    Top = 440
     Width = 37
     Caption = 'sMinute'
     ParentColor = False
@@ -206,7 +206,7 @@ object Form2: TForm2
   object MaskEdit1: TMaskEdit
     Left = 65
     Height = 21
-    Top = 336
+    Top = 368
     Width = 40
     CharCase = ecNormal
     MaxLength = 5
@@ -219,7 +219,7 @@ object Form2: TForm2
   object mask1: TLabel
     Left = 452
     Height = 13
-    Top = 368
+    Top = 440
     Width = 30
     Caption = 'mask1'
     ParentColor = False
@@ -227,7 +227,7 @@ object Form2: TForm2
   object MaskEdit2: TMaskEdit
     Left = 65
     Height = 21
-    Top = 372
+    Top = 404
     Width = 40
     CharCase = ecNormal
     MaxLength = 5
@@ -240,7 +240,7 @@ object Form2: TForm2
   object MaskEdit3: TMaskEdit
     Left = 65
     Height = 21
-    Top = 408
+    Top = 440
     Width = 40
     CharCase = ecNormal
     MaxLength = 5
@@ -253,7 +253,7 @@ object Form2: TForm2
   object MaskEdit4: TMaskEdit
     Left = 129
     Height = 21
-    Top = 336
+    Top = 368
     Width = 40
     CharCase = ecNormal
     MaxLength = 5
@@ -266,7 +266,7 @@ object Form2: TForm2
   object MaskEdit5: TMaskEdit
     Left = 129
     Height = 21
-    Top = 372
+    Top = 404
     Width = 40
     CharCase = ecNormal
     MaxLength = 5
@@ -279,7 +279,7 @@ object Form2: TForm2
   object MaskEdit6: TMaskEdit
     Left = 129
     Height = 21
-    Top = 408
+    Top = 440
     Width = 40
     CharCase = ecNormal
     MaxLength = 5
@@ -292,7 +292,7 @@ object Form2: TForm2
   object CheckBox1: TCheckBox
     Left = 32
     Height = 17
-    Top = 344
+    Top = 376
     Width = 23
     Caption = ' '
     TabOrder = 8
@@ -300,7 +300,7 @@ object Form2: TForm2
   object CheckBox2: TCheckBox
     Left = 32
     Height = 17
-    Top = 376
+    Top = 408
     Width = 23
     Caption = ' '
     TabOrder = 9
@@ -308,7 +308,7 @@ object Form2: TForm2
   object CheckBox3: TCheckBox
     Left = 32
     Height = 17
-    Top = 408
+    Top = 440
     Width = 23
     Caption = ' '
     TabOrder = 10
@@ -316,7 +316,7 @@ object Form2: TForm2
   object Edit2: TEdit
     Left = 226
     Height = 21
-    Top = 488
+    Top = 560
     Width = 80
     TabOrder = 11
     Text = 'Edit2'
@@ -324,7 +324,7 @@ object Form2: TForm2
   object Button1: TButton
     Left = 322
     Height = 25
-    Top = 488
+    Top = 560
     Width = 75
     Caption = 'Button1'
     OnClick = Button1Click
@@ -333,7 +333,7 @@ object Form2: TForm2
   object Edit3: TEdit
     Left = 226
     Height = 21
-    Top = 528
+    Top = 600
     Width = 80
     TabOrder = 13
     Text = 'Edit3'
@@ -341,7 +341,7 @@ object Form2: TForm2
   object Button2: TButton
     Left = 324
     Height = 25
-    Top = 524
+    Top = 596
     Width = 75
     Caption = 'Button2'
     OnClick = Button2Click
@@ -350,7 +350,7 @@ object Form2: TForm2
   object Button3: TButton
     Left = 128
     Height = 25
-    Top = 488
+    Top = 560
     Width = 75
     Caption = 'Button3'
     OnClick = Button3Click
@@ -359,30 +359,31 @@ object Form2: TForm2
   object Button4: TButton
     Left = 130
     Height = 25
-    Top = 528
+    Top = 600
     Width = 75
     Caption = 'Button4'
     OnClick = Button4Click
     TabOrder = 16
   end
   object Laden: TButton
-    Left = 130
+    Left = 122
     Height = 25
-    Top = 448
+    Top = 0
     Width = 75
     Caption = 'Laden'
+    OnClick = LadenClick
     TabOrder = 17
   end
   object Panel1: TPanel
-    Left = 416
+    Left = 440
     Height = 56
-    Top = 16
-    Width = 152
+    Top = 48
+    Width = 136
     ClientHeight = 56
-    ClientWidth = 152
+    ClientWidth = 136
     TabOrder = 18
     object aktiv: TCheckBox
-      Left = 56
+      Left = 48
       Height = 17
       Top = 16
       Width = 43
@@ -392,13 +393,13 @@ object Form2: TForm2
     end
   end
   object Panel3: TPanel
-    Left = 32
+    Left = 40
     Height = 96
-    Top = 88
-    Width = 536
+    Top = 120
+    Width = 539
     BorderWidth = 3
     ClientHeight = 96
-    ClientWidth = 536
+    ClientWidth = 539
     ParentColor = False
     TabOrder = 19
     OnClick = Panel3Click
@@ -502,12 +503,12 @@ object Form2: TForm2
     end
   end
   object Panel2: TPanel
-    Left = 200
+    Left = 216
     Height = 56
-    Top = 16
-    Width = 202
+    Top = 48
+    Width = 204
     ClientHeight = 56
-    ClientWidth = 202
+    ClientWidth = 204
     TabOrder = 21
     object P10: TButton
       Left = 136

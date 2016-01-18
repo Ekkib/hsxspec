@@ -10,9 +10,9 @@ object Form1: TForm1
   OnShow = FormShow
   LCLVersion = '1.4.4.0'
   object Ende: TButton
-    Left = 816
+    Left = 256
     Height = 25
-    Top = 512
+    Top = 320
     Width = 75
     Caption = 'Ende'
     OnClick = EndeClick
@@ -32,14 +32,13 @@ object Form1: TForm1
     Top = 8
     Width = 162
     DateTime = 41761
-    OnChange = Calendar1Change
     OnDblClick = Calendar1DblClick
     TabOrder = 2
   end
   object Hello_World: TButton
-    Left = 720
+    Left = 256
     Height = 25
-    Top = 512
+    Top = 280
     Width = 75
     Caption = 'Hello_World'
     OnClick = Hello_WorldClick
@@ -203,12 +202,14 @@ object Form1: TForm1
     ChildSizing.ControlsPerLine = 1
     ClientHeight = 167
     ClientWidth = 196
+    ItemIndex = 0
     Items.Strings = (
       'a'
       'b'
       'c'
       'd'
     )
+    OnClick = HeizprogrammeClick
     TabOrder = 13
   end
   object Erstelle_Regeln: TButton
@@ -230,28 +231,20 @@ object Form1: TForm1
     TabOrder = 15
   end
   object Tagesregel: TButton
-    Left = 621
+    Left = 192
     Height = 25
-    Top = 288
-    Width = 131
+    Top = 200
+    Width = 195
     Caption = 'Tagesregel'
     OnClick = TagesregelClick
     TabOrder = 16
-  end
-  object Sichere_Regeln: TButton
-    Left = 621
-    Height = 25
-    Top = 380
-    Width = 131
-    Caption = 'Sichere_Regeln'
-    TabOrder = 17
   end
   object Edit2: TEdit
     Left = 560
     Height = 21
     Top = 512
     Width = 136
-    TabOrder = 18
+    TabOrder = 17
     Text = 'Edit2'
   end
   object Alles_Speichern: TButton
@@ -259,8 +252,9 @@ object Form1: TForm1
     Height = 36
     Top = 228
     Width = 163
-    Caption = 'Alles_Speichern'
-    TabOrder = 19
+    Caption = 'Alles_Sichern'
+    OnClick = Alles_SpeichernClick
+    TabOrder = 18
   end
   object Debug_Flag: TCheckBox
     Left = 216
@@ -268,7 +262,7 @@ object Form1: TForm1
     Top = 240
     Width = 77
     Caption = 'Debug_Flag'
-    TabOrder = 20
+    TabOrder = 19
   end
   object Info_ueber_Aggregate: TLabel
     Left = 416
