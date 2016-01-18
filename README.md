@@ -14,7 +14,7 @@ Dort gibt es auch auch Links zu Windows und Raspi Executables, im Verzeichnis "S
 
 # 2016....
 
-- Verbesserung 1
+- "Laden"/"Sichern" Knöpfe nach oben links verschoben 
 - Verbesserung 2
 
 # 20160115
