@@ -2,6 +2,18 @@ unit Unit1;
 
 // quick & dirty. Schön kommt irgendwann später, :-)
 
+{ to do :
+- Datum hochzählen
+- Max Anzahl Regler in Dimensionierung übernehmen
+- .MD Datei anpassen
+- Tempmittelwert in Maske
+- Debug Flag
+- Debug Minuten, Sekunden
+- Lizenz
+
+}
+
+
 {$mode objfpc}{$H+}
 
 interface
@@ -67,7 +79,7 @@ type
   TForm1 = class(TForm)
     Alles_Speichern: TButton;
     Debug_Flag: TCheckBox;
-    Edit2: TEdit;
+    DatumZeit: TEdit;
     Info_ueber_Aggregate: TLabel;
     Tagesregel: TButton;
     Erstelle_Regeln: TButton;
@@ -424,7 +436,7 @@ procedure TForm1.Timer1Timer(Sender: TObject);
 begin
   inc (i1) ;
   edit1.text := IntToStr (i1) ;
-  edit2.Text := DateTimeToStr (now)  ;
+  DatumZeit.Text := DateTimeToStr (now)  ;
 
   if i1 > 3 then begin   // nach 3 Sekunden sollte alles eingeschwungen sein
     regel_i [1] . dec_tfi ;
