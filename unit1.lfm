@@ -20,7 +20,7 @@ object Form1: TForm1
   end
   object Edit1: TEdit
     Left = 616
-    Height = 23
+    Height = 21
     Top = 176
     Width = 80
     TabOrder = 1
@@ -28,9 +28,9 @@ object Form1: TForm1
   end
   object Calendar1: TCalendar
     Left = 8
-    Height = 160
+    Height = 153
     Top = 8
-    Width = 176
+    Width = 162
     DateTime = 41761
     OnDblClick = Calendar1DblClick
     TabOrder = 2
@@ -67,122 +67,129 @@ object Form1: TForm1
     OnClick = P_LadenClick
     TabOrder = 5
   end
-  object ComboBox1: TComboBox
+  object HzMontag: TComboBox
     Left = 100
-    Height = 23
+    Height = 21
     Top = 280
     Width = 131
-    ItemHeight = 15
+    ItemHeight = 13
+    OnChange = HzMontagChange
     TabOrder = 6
-    Text = 'ComboBox1'
+    Text = 'HzMontag'
   end
-  object ComboBox2: TComboBox
+  object HzDienstag: TComboBox
     Left = 100
-    Height = 23
+    Height = 21
     Top = 312
     Width = 131
-    ItemHeight = 15
+    ItemHeight = 13
+    OnChange = HzMontagChange
     TabOrder = 7
-    Text = 'ComboBox2'
+    Text = 'HzDienstag'
   end
-  object ComboBox3: TComboBox
+  object HzMittwoch: TComboBox
     Left = 100
-    Height = 23
+    Height = 21
     Top = 344
     Width = 131
-    ItemHeight = 15
+    ItemHeight = 13
+    OnChange = HzMontagChange
     TabOrder = 8
-    Text = 'ComboBox3'
+    Text = 'HzMittwoch'
   end
-  object ComboBox4: TComboBox
+  object HzDonnerstag: TComboBox
     Left = 100
-    Height = 23
+    Height = 21
     Top = 376
     Width = 131
-    ItemHeight = 15
+    ItemHeight = 13
+    OnChange = HzMontagChange
     TabOrder = 9
-    Text = 'ComboBox4'
+    Text = 'HzDonnerstag'
   end
-  object ComboBox5: TComboBox
+  object HzFreitag: TComboBox
     Left = 100
-    Height = 23
+    Height = 21
     Top = 408
     Width = 131
-    ItemHeight = 15
+    ItemHeight = 13
+    OnChange = HzMontagChange
     TabOrder = 10
-    Text = 'ComboBox5'
+    Text = 'HzFreitag'
   end
-  object ComboBox6: TComboBox
+  object HzSamstag: TComboBox
     Left = 100
-    Height = 23
+    Height = 21
     Top = 440
     Width = 131
-    ItemHeight = 15
+    ItemHeight = 13
+    OnChange = HzMontagChange
     TabOrder = 11
-    Text = 'ComboBox6'
+    Text = 'HzSamstag'
   end
-  object ComboBox7: TComboBox
+  object HzSonntag: TComboBox
     Left = 100
-    Height = 23
+    Height = 21
     Top = 472
     Width = 131
-    ItemHeight = 15
+    ItemHeight = 13
+    OnChange = HzMontagChange
     TabOrder = 12
-    Text = 'ComboBox7'
+    Text = 'HzSonntag'
   end
   object Montag: TLabel
     Left = 16
-    Height = 15
+    Height = 13
     Top = 280
-    Width = 42
+    Width = 36
     Caption = 'Montag'
     ParentColor = False
   end
   object Dienstag: TLabel
     Left = 16
-    Height = 15
+    Height = 13
     Top = 312
-    Width = 46
+    Width = 42
     Caption = 'Dienstag'
     ParentColor = False
   end
   object Mittwoch: TLabel
     Left = 16
-    Height = 15
+    Height = 13
     Top = 344
-    Width = 51
+    Width = 43
     Caption = 'Mittwoch'
     ParentColor = False
   end
   object Donnerstag: TLabel
     Left = 16
-    Height = 15
+    Height = 13
     Top = 376
-    Width = 61
+    Width = 56
     Caption = 'Donnerstag'
     ParentColor = False
   end
   object Freitag: TLabel
     Left = 16
-    Height = 15
+    Height = 13
     Top = 408
-    Width = 36
+    Width = 34
     Caption = 'Freitag'
     ParentColor = False
   end
   object Samstag: TLabel
     Left = 16
-    Height = 15
+    Height = 13
     Top = 440
-    Width = 45
+    Width = 41
     Caption = 'Samstag'
     ParentColor = False
   end
   object Sonntag: TLabel
     Left = 16
-    Height = 15
+    Height = 13
     Top = 472
-    Width = 44
+    Width = 40
     Caption = 'Sonntag'
     ParentColor = False
   end
@@ -190,7 +197,7 @@ object Form1: TForm1
     Left = 192
     Height = 185
     Top = 32
-    Width = 200
+    Width = 139
     AutoFill = True
     Caption = 'Heizprogramme'
     ChildSizing.LeftRightSpacing = 6
@@ -200,8 +207,8 @@ object Form1: TForm1
     ChildSizing.ShrinkVertical = crsScaleChilds
     ChildSizing.Layout = cclLeftToRightThenTopToBottom
     ChildSizing.ControlsPerLine = 1
-    ClientHeight = 165
-    ClientWidth = 196
+    ClientHeight = 167
+    ClientWidth = 135
     ItemIndex = 0
     Items.Strings = (
       'a'
@@ -209,7 +216,6 @@ object Form1: TForm1
       'c'
       'd'
     )
-    OnClick = HeizprogrammeClick
     TabOrder = 13
   end
   object Erstelle_Regeln: TButton
@@ -234,16 +240,16 @@ object Form1: TForm1
     Left = 192
     Height = 25
     Top = 232
-    Width = 195
+    Width = 139
     Caption = 'Tagesregel'
     OnClick = TagesregelClick
     TabOrder = 16
   end
   object DatumZeit: TEdit
     Left = 192
-    Height = 23
+    Height = 21
     Top = 8
-    Width = 195
+    Width = 136
     TabOrder = 17
     Text = 'DatumZeit'
   end
@@ -258,17 +264,18 @@ object Form1: TForm1
   end
   object Debug_Flag: TCheckBox
     Left = 256
-    Height = 19
+    Height = 17
     Top = 360
-    Width = 82
+    Width = 77
     Caption = 'Debug_Flag'
+    OnChange = Debug_FlagChange
     TabOrder = 19
   end
   object Info_ueber_Aggregate: TLabel
-    Left = 416
-    Height = 15
+    Left = 360
+    Height = 13
     Top = 16
-    Width = 116
+    Width = 111
     Caption = 'Info_ueber_Aggregate'
     ParentColor = False
   end

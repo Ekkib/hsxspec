@@ -69,17 +69,12 @@ type
     procedure Button4Click(Sender: TObject);
     procedure CheckBox4Change(Sender: TObject);
     procedure CheckBox5Change(Sender: TObject);
-    procedure CheckBox6Change(Sender: TObject);
-    procedure ComboBox1Change(Sender: TObject);
-    procedure ComboBox2Change(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure LadenClick(Sender: TObject);
     procedure M10Click(Sender: TObject);
     procedure P10Click(Sender: TObject);
-    procedure Panel3Click(Sender: TObject);
     procedure Panel4Click(Sender: TObject);
     procedure Panel5Click(Sender: TObject);
-    procedure Panel6Click(Sender: TObject);
     procedure Panel7Click(Sender: TObject);
     procedure RadioGroup1Click(Sender: TObject);
     procedure RadioGroup2Click(Sender: TObject);
@@ -175,25 +170,11 @@ begin
                        else panel6.Color:= clYellow ;
 end;
 
-procedure TForm2.CheckBox6Change(Sender: TObject);
-begin
-
-end;
-
-procedure TForm2.ComboBox1Change(Sender: TObject);
-begin
-
-end;
-
-procedure TForm2.ComboBox2Change(Sender: TObject);
-begin
-
-end;
-
 procedure TForm2.FormCreate(Sender: TObject);
 begin
 
 end;
+
 
 procedure TForm2.LadenClick(Sender: TObject);
   var psec : string ;
@@ -212,17 +193,14 @@ end;
 
 procedure TForm2.M10Click(Sender: TObject);
 begin
-  nDispT := nDispT - 10 ;
+    if unit1.form1.Debug_Flag.Checked then nDispT := nDispT - 10
+                                      else nDispT := nDispT - 600 ;
 end;
 
 procedure TForm2.P10Click(Sender: TObject);
 begin
-  nDispT := nDispT + 10 ;
-end;
-
-procedure TForm2.Panel3Click(Sender: TObject);
-begin
-
+    if unit1.form1.Debug_Flag.Checked then nDispT := nDispT + 10
+                                      else nDispT := nDispT + 600 ;
 end;
 
 procedure TForm2.Panel4Click(Sender: TObject);
@@ -235,11 +213,6 @@ procedure TForm2.Panel5Click(Sender: TObject);
 begin
   if panel5.Color <> clLime then panel5.Color := clLime
                           else panel5.Color := clRed ;
-end;
-
-procedure TForm2.Panel6Click(Sender: TObject);
-begin
-
 end;
 
 procedure TForm2.Panel7Click(Sender: TObject);

@@ -14,8 +14,9 @@ Dort gibt es auch auch Links zu Windows und Raspi Executables, im Verzeichnis "S
 
 # 20160120
 
-- "Laden"/"Sichern" Knöpfe nach oben links verschoben 
+- "Laden"/"Sichern" Knöpfe bei Regeln nach oben links verschoben 
 - Diverse Verbesserungen
+- todo Liste in unit1.pas
 
 # 20160115
 

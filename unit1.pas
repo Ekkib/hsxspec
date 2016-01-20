@@ -1,18 +1,16 @@
-unit Unit1;
+unit Unit1;       // quick & dirty. Schön kommt irgendwann später, :-)
 
-// quick & dirty. Schön kommt irgendwann später, :-)
-
-{ to do :
-- Datum hochzählen
-- Max Anzahl Regler in Dimensionierung übernehmen
-- .MD Datei anpassen
-- Tempmittelwert in Maske
+{ to do, 20160120  22:40 h:
+- Initialisierungen aufräumen !
 - Debug Flag
 - Debug Minuten, Sekunden
-- Lizenz
-
+- Dropdown Listen in den Regeln mit aktuellen Werten füttern
+- Schleife in Alles_SpeichernClick
+- Regel : Zeitanzeige in Std Min Sec
+- Mittelwertkiste nach Regel xx,  Tempmittelwert in Maske
 }
 
+// geplante Erweiterungen und bekannte Bugs in getrennter Datei
 
 {$mode objfpc}{$H+}
 
@@ -22,12 +20,35 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
 
-const Version    = 'HSX_spec 20160118' ;  lizenz_text =
+const Version    = 'HSX_spec 20160120' ;  lizenz_text =
 
  'Heizungssteuerung HSX mit 1-Wire Temperatur-Sensoren'          + #13 + #13 +
  'Version : ' + version                                          + #13 + #13 +
  'Copyright (c) 2006-2016 : Ekkehard Pofahl, ekkehard@pofahl.de' + #13 + #13 +
-  { MIT
+
+'Lizenz: CC BY-NC 3.0             Web Adresse der Lizenz :'        +#13+
+' '                                                                +#13+
+'    https://creativecommons.org/licenses/by-nc/3.0/de/'           +#13+
+' '                                                                       +#13+
+'Sie duerfen das Werk bzw. den Inhalt vervielfältigen, verbreiten und'    +#13+
+'oeffentlich zugaenglich machen, Abwandlungen und Bearbeitungen des'      +#13+
+'Werkes bzw. Inhaltes anfertigen zu den folgenden Bedingungen:'           +#13+
+' '                                                                       +#13+
+'Namensnennung - Sie muessen den Namen des Autors/Rechteinhabers in der'  +#13+
+'von ihm festgelegten Weise nennen.'                                      +#13+
+'Keine kommerzielle Nutzung - Dieses Werk bzw. dieser Inhalt darf'        +#13+
+'nicht fuer kommerzielle Zwecke verwendet werden.'                        +#13+
+'Wobei gilt: Verzichtserklaerung - Jede der vorgenannten Bedingungen kann'+#13+
+'aufgehoben werden, sofern Sie die ausdrueckliche Einwilligung des'       +#13+
+'Rechteinhabers dazu erhalten.'                                           +#13+
+' '                                                                       +#13+
+'Die Veröffentlichung dieser Software erfolgt in der Hoffnung, dass sie'   +#13+
+'Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die'+#13+
+'implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FUER EINEN'     +#13+
+'BESTIMMTEN ZWECK. Die Nutzung dieser Software erfolgt auf eigenes Risiko!' ;
+
+
+ { MIT
  Copyright (c) <year> <copyright holders>
  Permission is hereby granted, free of charge, to any person
  obtaining a copy of this software and associated documentation files
@@ -50,6 +71,8 @@ const Version    = 'HSX_spec 20160118' ;  lizenz_text =
  OR OTHER DEALINGS IN THE SOFTWARE.
   }
 
+ {
+
  'This program is free software: you can redistribute it and/or modify' + #13 +
  'it under the terms of the GNU General Public License as published by' + #13 +
  'the Free Software Foundation, either version 3 of the License, or'    + #13 +
@@ -61,13 +84,8 @@ const Version    = 'HSX_spec 20160118' ;  lizenz_text =
  'GNU General Public License for more details. '                        + #13 +
 
  'You should have received a copy of the GNU General Public License '   + #13 +
- 'along with this program.  If not, see <http://www.gnu.org/licenses/>' + #13 +
-     #13 +
- 'Planned : Lizenz nach Creativ Commons ' ;
-
-
-// geplante Erweiterungen und bekannte Bugs in getrennter Datei
-
+ 'along with this program.  If not, see <http://www.gnu.org/licenses/>' + #13 ;
+}
 
 const
       CmaxRegler = 12 ;  // etwas unelegant, aber einfach
@@ -88,13 +106,13 @@ type
     Hello_World: TButton;
     P_Laden: TButton;
     Calendar1: TCalendar;
-    ComboBox1: TComboBox;
-    ComboBox2: TComboBox;
-    ComboBox3: TComboBox;
-    ComboBox4: TComboBox;
-    ComboBox5: TComboBox;
-    ComboBox6: TComboBox;
-    ComboBox7: TComboBox;
+    HzMontag: TComboBox;
+    HzDienstag: TComboBox;
+    HzMittwoch: TComboBox;
+    HzDonnerstag: TComboBox;
+    HzFreitag: TComboBox;
+    HzSamstag: TComboBox;
+    HzSonntag: TComboBox;
     Edit1: TEdit;
     Montag: TLabel;
     Dienstag: TLabel;
@@ -107,27 +125,24 @@ type
     Memo1: TMemo;
     Timer1: TTimer;
     procedure Alles_SpeichernClick(Sender: TObject);
+    procedure HzMontagChange(Sender: TObject);
+    procedure Debug_FlagChange(Sender: TObject);
     procedure Erstelle_RegelnClick(Sender: TObject);
     procedure Calendar1DblClick(Sender: TObject);
     procedure EinstellungenClick(Sender: TObject);
     procedure EndeClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure HeizprogrammeClick(Sender: TObject);
-    procedure HeizprogrammeSelectionChanged(Sender: TObject);
     procedure Hello_WorldClick(Sender: TObject);
     procedure P_LadenClick(Sender: TObject);
-    procedure Sichere_RegelnClick(Sender: TObject);
     procedure TagesregelClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
-
     function cre_Ini_String ( xsection, xname, xvalue : string) : string   ;
     function create_Ini_Bool (xsection, xname : string; bvalue : boolean) : boolean ;
     function cre_Ini_Int (xsection, xname : string; ivalue : Integer) : Integer ;
     function cre_Ini_Time (xsection, xname : string; xtime : TTime) : TTime ;
     function Pindex (pdate : TDateTime) : Integer  ;
     function DayToPrg (WTag : Integer) : Integer ;
-
 
   private
     { private declarations }
@@ -150,7 +165,7 @@ implementation
 
 { TForm1 }
 
-var  regel_i : array [1 .. 10 ] of TForm2 ;
+var  regel_i : array [1 .. CmaxRegler ] of TForm2 ;
   li : Integer ;
   i1 : integer ;
 
@@ -187,13 +202,13 @@ function TForm1.DayToPrg (WTag : Integer) : Integer ;
 begin
        DayToPrg := 0 ; // Default
        case WTag of
-       1 : DayToPrg := ComboBox1.ItemIndex ;
-       2 : DayToPrg := ComboBox2.ItemIndex ;
-       3 : DayToPrg := ComboBox3.ItemIndex ;
-       4 : DayToPrg := ComboBox4.ItemIndex ;
-       5 : DayToPrg := ComboBox5.ItemIndex ;
-       6 : DayToPrg := ComboBox6.ItemIndex ;
-       7 : DayToPrg := ComboBox7.ItemIndex ;
+       1 : DayToPrg := HzMontag.ItemIndex ;
+       2 : DayToPrg := HzDienstag.ItemIndex ;
+       3 : DayToPrg := HzMittwoch.ItemIndex ;
+       4 : DayToPrg := HzDonnerstag.ItemIndex ;
+       5 : DayToPrg := HzFreitag.ItemIndex ;
+       6 : DayToPrg := HzSamstag.ItemIndex ;
+       7 : DayToPrg := HzSonntag.ItemIndex ;
        end ;
 end;
 
@@ -220,6 +235,8 @@ begin
                   ExtractFileName_ohneExtension (ParamStr (0)) + '.ini' ) ;
 
   iniFile.WriteString ('Allgemeine_Infos', 'Programmversion', Version ) ;
+
+  debug_flag.Checked := create_Ini_Bool ('Einstellungen', 'debug', false) ;
 
   // Demnächst auch variabel ! :-)
   // Name_Regler
@@ -255,15 +272,6 @@ begin
        P_Laden.Click; // Kein Doppelmoppel : Regeln müssen erst erstellt werden
 end;
 
-procedure TForm1.HeizprogrammeClick(Sender: TObject);
-begin
-
-end;
-
-procedure TForm1.HeizprogrammeSelectionChanged(Sender: TObject);
-begin
-
-end;
 
 
 procedure TForm1.Erstelle_RegelnClick(Sender: TObject);
@@ -337,6 +345,7 @@ end;
 
 procedure TForm1.Alles_SpeichernClick(Sender: TObject);
 begin
+      // :-)
       regel_i [1] . Sichern.click ;
       regel_i [2] . Sichern.click  ;
       regel_i [3] . Sichern.click  ;
@@ -344,7 +353,17 @@ begin
 
 end;
 
+procedure TForm1.HzMontagChange(Sender: TObject);
+begin
+  iniFile.WriteInteger ('Tagesvorwahl', TComboBox(Sender).Name ,
+                                        TComboBox(Sender).ItemIndex ) ;
 
+end;
+
+procedure TForm1.Debug_FlagChange(Sender: TObject);
+begin
+      iniFile.WriteBool ('Einstellungen', 'debug', debug_flag.Checked) ;
+end;
 
 procedure TForm1.Calendar1DblClick(Sender: TObject);
 begin
@@ -355,7 +374,6 @@ procedure TForm1.EinstellungenClick(Sender: TObject);
 begin
       Form4.ShowModal;
 end;
-
 
 
 procedure TForm1.Hello_WorldClick(Sender: TObject);
@@ -380,20 +398,20 @@ begin
 
   // Heizprogramme.Items := memo1.Lines  ;
 
-  combobox1.Items := Heizprogramme.Items ;
-  combobox2.Items := Heizprogramme.Items  ;
-  combobox3.Items := Heizprogramme.Items  ;
-  combobox4.Items := Heizprogramme.Items  ;
-  combobox5.Items := Heizprogramme.Items  ;
-  combobox6.Items := Heizprogramme.Items  ;
-  combobox7.Items := Heizprogramme.Items  ;
-  Combobox1.ItemIndex:= 0 ;   // Montag
-  Combobox2.ItemIndex:= 0 ;
-  Combobox3.ItemIndex:= 0 ;
-  Combobox4.ItemIndex:= 0 ;
-  Combobox5.ItemIndex:= 0 ;
-  Combobox6.ItemIndex:= 1 ;
-  Combobox7.ItemIndex:= 1 ;   // Sonntag
+  HzMontag.Items     := Heizprogramme.Items ;
+  HzDienstag.Items   := Heizprogramme.Items ;
+  HzMittwoch.Items   := Heizprogramme.Items ;
+  HzDonnerstag.Items := Heizprogramme.Items ;
+  HzFreitag.Items    := Heizprogramme.Items ;
+  HzSamstag.Items    := Heizprogramme.Items ;
+  HzSonntag.Items    := Heizprogramme.Items ;
+  with HzMontag     do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzDienstag   do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzMittwoch   do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzDonnerstag do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzFreitag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzSamstag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 1 );
+  with HzSonntag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 1 );
 
   if Old_index > Heizprogramme.Items.Count then Old_index := 0 ;
 
@@ -410,10 +428,6 @@ begin
 
 end;
 
-procedure TForm1.Sichere_RegelnClick(Sender: TObject);
-begin
-
-end;
 
 Function TForm1.Pindex (pdate : TDateTime) : Integer  ;
 var iday : Integer ;

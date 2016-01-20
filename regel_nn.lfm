@@ -30,7 +30,6 @@ object Form2: TForm2
         'PWintergarten'
         'PHeizkoerper'
       )
-      OnChange = ComboBox2Change
       TabOrder = 0
       Text = 'ComboBox2'
     end
@@ -60,7 +59,6 @@ object Form2: TForm2
       ClientWidth = 544
       ParentColor = False
       TabOrder = 2
-      OnClick = Panel6Click
       object CheckBox5: TCheckBox
         Left = 8
         Height = 17
@@ -99,7 +97,6 @@ object Form2: TForm2
             'TWGart_Vor'
             'TWGart_Rueck'
           )
-          OnChange = ComboBox1Change
           TabOrder = 0
           Text = 'ComboBox1'
         end
@@ -402,7 +399,6 @@ object Form2: TForm2
     ClientWidth = 539
     ParentColor = False
     TabOrder = 19
-    OnClick = Panel3Click
     object CheckBox4: TCheckBox
       Left = 8
       Height = 17
@@ -441,7 +437,6 @@ object Form2: TForm2
           'TWGart_Vor'
           'TWGart_Rueck'
         )
-        OnChange = ComboBox1Change
         TabOrder = 0
         Text = 'ComboBox1'
       end
