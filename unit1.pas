@@ -1,6 +1,6 @@
 unit Unit1;       // quick & dirty. Schön kommt irgendwann später, :-)
 
-{ to do, 20160120  22:40 h:
+{ to do :
 - Initialisierungen aufräumen !
 - Debug Flag
 - Debug Minuten, Sekunden
@@ -8,6 +8,7 @@ unit Unit1;       // quick & dirty. Schön kommt irgendwann später, :-)
 - Schleife in Alles_SpeichernClick
 - Regel : Zeitanzeige in Std Min Sec
 - Mittelwertkiste nach Regel xx,  Tempmittelwert in Maske
+- Listen in die .ini Datei
 }
 
 // geplante Erweiterungen und bekannte Bugs in getrennter Datei
@@ -20,7 +21,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
 
-const Version    = 'HSX_spec 20160120' ;  lizenz_text =
+const Version    = 'HSX_spec 20160121' ;  lizenz_text =
 
  'Heizungssteuerung HSX mit 1-Wire Temperatur-Sensoren'          + #13 + #13 +
  'Version : ' + version                                          + #13 + #13 +
@@ -88,7 +89,7 @@ const Version    = 'HSX_spec 20160120' ;  lizenz_text =
 }
 
 const
-      CmaxRegler = 12 ;  // etwas unelegant, aber einfach
+      CmaxRegler = 8 ;  maxT = 12 ; MaxAktor = 8 ;// etwas unelegant, aber einfach
 
 type
 
@@ -96,9 +97,10 @@ type
 
   TForm1 = class(TForm)
     Alles_Speichern: TButton;
+    cre_Tempboxes: TButton;
     Debug_Flag: TCheckBox;
     DatumZeit: TEdit;
-    Info_ueber_Aggregate: TLabel;
+    LabeledEdit1: TLabeledEdit;
     Tagesregel: TButton;
     Erstelle_Regeln: TButton;
     Einstellungen: TButton;
@@ -125,6 +127,7 @@ type
     Memo1: TMemo;
     Timer1: TTimer;
     procedure Alles_SpeichernClick(Sender: TObject);
+    procedure cre_TempboxesClick(Sender: TObject);
     procedure HzMontagChange(Sender: TObject);
     procedure Debug_FlagChange(Sender: TObject);
     procedure Erstelle_RegelnClick(Sender: TObject);
@@ -150,8 +153,11 @@ type
     { public declarations }
     IniFile : TIniFile ;
     rkx, N_Regler, N_Programm  : array [1 .. CmaxRegler] of string ;
+    N_TMessstelle : array [1 .. MaxT] of string ;
+    N_Aktoren : array [1 .. MaxAktor] of string ;
     ini_indices  : TStrings ;
     Regeln_erstellt : Boolean ;
+    xLabeledEdit : TLabeledEdit ;
   end;
 
 var
@@ -260,6 +266,32 @@ begin
   N_Programm [6] := cre_ini_string ('Name_Programm', 'np_6', 'Programm_1');
   N_Programm [7] := cre_ini_string ('Name_Programm', 'np_7', 'Programm_2');
 
+  // Name_TMessstelle
+
+  N_TMessstelle [1] := cre_ini_string ('Name_TMessstelle', 'nt_1', 'TWarmwasser');
+  N_TMessstelle [2] := cre_ini_string ('Name_TMessstelle', 'nt_2', 'TKessel');
+  N_TMessstelle [3] := cre_ini_string ('Name_TMessstelle', 'nt_3', 'TWohnzimmer');
+  N_TMessstelle [4] := cre_ini_string ('Name_TMessstelle', 'nt_4', 'TWintergarten');
+  N_TMessstelle [5] := cre_ini_string ('Name_TMessstelle', 'nt_5', 'TAussen_Nord');
+  N_TMessstelle [6] := cre_ini_string ('Name_TMessstelle', 'nt_6', 'TAussen_Sued');
+  N_TMessstelle [7] := cre_ini_string ('Name_TMessstelle', 'nt_7', 'TWohnz_Vor');
+  N_TMessstelle [8] := cre_ini_string ('Name_TMessstelle', 'nt_4', 'TWohnz_Rueck');
+  N_TMessstelle [9] := cre_ini_string ('Name_TMessstelle', 'nt_5', 'TRadiat_Vor');
+  N_TMessstelle [10]:= cre_ini_string ('Name_TMessstelle','nt_10', 'TRadiat_Rueck');
+  N_TMessstelle [11]:= cre_ini_string ('Name_TMessstelle','nt_11', 'TWGart_Vor');
+  N_TMessstelle [12]:= cre_ini_string ('Name_TMessstelle','nt_12', 'TWGart_Rueck');
+
+  // Name_Aktoren
+
+  N_Programm [1] := cre_ini_string ('Name_Aktoren', 'na_1', 'Brenner');
+  N_Programm [2] := cre_ini_string ('Name_Aktoren', 'na_2', 'PWohnzimmer');
+  N_Programm [3] := cre_ini_string ('Name_Aktoren', 'na_3', 'PWintergarten');
+  N_Programm [4] := cre_ini_string ('Name_Aktoren', 'na_4', 'PHeizkoerper');
+  N_Programm [5] := cre_ini_string ('Name_Aktoren', 'na_5', 'Pumpe5');
+  N_Programm [6] := cre_ini_string ('Name_Aktoren', 'na_6', 'Pumpe6');
+  N_Programm [7] := cre_ini_string ('Name_Aktoren', 'na_7', 'Pumpe7');
+  N_Programm [8] := cre_ini_string ('Name_Aktoren', 'na_7', 'Pumpe8');
+
   // Readsection
 
 end;
@@ -350,6 +382,50 @@ begin
       regel_i [2] . Sichern.click  ;
       regel_i [3] . Sichern.click  ;
       regel_i [4] . Sichern.click  ;
+
+end;
+
+
+procedure TForm1.cre_TempboxesClick(Sender: TObject);
+var
+    yi  : integer ;
+begin
+          // Temperaturfelder :
+    for yi := 1 to maxT do begin
+       xLabeledEdit         := TLabeledEdit.Create (form1) ;
+       xLabeledEdit.Parent  := form1 ;
+       xLabeledEdit.Name    := 'T' + IntToStr (yi) ;
+       xLabeledEdit.EditLabel.Caption :=  N_TMessstelle [yi] ;
+       //'Temp_' + IntToStr (yi) ;//TxName[yi];
+       xLabeledEdit.LabelPosition     := lpLeft ;
+       xLabeledEdit.Top     := 20 + (yi - 1) * 24 ;
+       xLabeledEdit.Left    := 80  ;
+       xLabeledEdit.Width   := 42 ;
+       xLabeledEdit.Visible := true ;
+       // Defaulttemperaturen :
+       //Txdef [yi]:=
+       cre_ini_int ('TDefault', 'TDef'+IntToStr (yi), 200 + yi) ; // /10;
+
+    end ;
+
+    // Aktorenfelder :
+for yi := 1 to 4 do begin
+  xLabeledEdit         := TLabeledEdit.Create (form1) ;
+  xLabeledEdit.Parent  := form1 ;
+  xLabeledEdit.Name    := 'A' + IntToStr (yi) ;
+  xLabeledEdit.Text :=  N_Programm [yi] ;
+  xLabeledEdit.EditLabel.Caption :=  '00:00:' +IntToStr (yi) + '0' ;
+  xLabeledEdit.LabelPosition     := lpLeft ;
+  xLabeledEdit.Top     := 20 + (yi - 1) * 24 ;
+  xLabeledEdit.Left    := 550  ;
+  xLabeledEdit.Width   := 100 ;
+  xLabeledEdit.Visible := true ;
+
+
+end ;
+
+
+
 
 end;
 

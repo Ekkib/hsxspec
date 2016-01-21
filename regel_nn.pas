@@ -13,18 +13,21 @@ type
   { TForm2 }
 
   TForm2 = class(TForm)
-    Button1: TButton;
-    Button2: TButton;
-    Button3: TButton;
-    Button4: TButton;
     aktiv: TCheckBox;
     CheckBox4: TCheckBox;
     CheckBox5: TCheckBox;
+    CheckBox6: TCheckBox;
     ComboBox1: TComboBox;
     ComboBox2: TComboBox;
     ComboBox3: TComboBox;
     ComboBox4: TComboBox;
+    ComboBox5: TComboBox;
     DispT: TLabel;
+    Edit10: TEdit;
+    Edit11: TEdit;
+    Edit12: TEdit;
+    Edit2: TEdit;
+    Edit3: TEdit;
     Edit4: TEdit;
     Edit5: TEdit;
     Edit6: TEdit;
@@ -34,10 +37,9 @@ type
     Label2: TLabel;
     Label3: TLabel;
     M10: TButton;
+    MaskEdit7: TMaskEdit;
     P10: TButton;
     Laden: TButton;
-    Edit2: TEdit;
-    Edit3: TEdit;
     Panel1: TPanel;
     Panel2: TPanel;
     Panel3: TPanel;
@@ -45,6 +47,8 @@ type
     Panel5: TPanel;
     Panel6: TPanel;
     Panel7: TPanel;
+    Panel8: TPanel;
+    Panel9: TPanel;
     RadioGroup1: TRadioGroup;
     RadioGroup2: TRadioGroup;
     Sichern: TButton;
@@ -103,10 +107,7 @@ uses unit1 ;
 
 procedure TForm2.dec_tfi ;
 begin
-    dec (tfi) ;
-    edit2.Text:= IntToStr (tfi) ;
-    dec (tfj) ;
-    edit3.Text:= IntToStr (tfj) ;
+
     if nDispT > 0 then dec (nDispT) ;
     DispT.Caption := IntToStr (nDispT) ;
     if nDispT > 0 then Panel2.Color:= clLime
@@ -131,7 +132,7 @@ end;
 
 procedure TForm2.Button1Click(Sender: TObject);
 begin
-  tfi := tfi + 30 ;
+
 end;
 
 procedure TForm2.aktivChange(Sender: TObject);
@@ -143,17 +144,17 @@ end;
 
 procedure TForm2.Button2Click(Sender: TObject);
 begin
-  tfj := tfj + 30 ;
+
 end;
 
 procedure TForm2.Button3Click(Sender: TObject);
 begin
-  tfi := tfi - 30 ;
+
 end;
 
 procedure TForm2.Button4Click(Sender: TObject);
 begin
-  tfj := tfj - 30 ;
+
 end;
 
 procedure TForm2.CheckBox4Change(Sender: TObject);
@@ -195,6 +196,7 @@ procedure TForm2.M10Click(Sender: TObject);
 begin
     if unit1.form1.Debug_Flag.Checked then nDispT := nDispT - 10
                                       else nDispT := nDispT - 600 ;
+    if nDispT < 0 then nDispT := 0 ;
 end;
 
 procedure TForm2.P10Click(Sender: TObject);
