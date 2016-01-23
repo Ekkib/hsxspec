@@ -8,16 +8,17 @@ Dokumentation des HSX Projektes :  https://sites.google.com/site/raspihs1/
 
 Dort gibt es auch auch Links zu Windows und Raspi Executables, im Verzeichnis "Spezifikation".
 
+Vielleicht wird aus dieser Spezifikation ja tatsächlich irgendwann ein lauffähiges Programm. In den compilierten Programmen laufen die Zeiten. Wer an den Baustellen des Programms (davon gibt es einige) mitarbeiten will, möge sich bitte melden. Abstimmung vermeidet parallele Entwicklungen, ;-) .
+
 # Changelog
 
-# 20160121
+# 20160123
 
 - interne Optimierungen
 
 # 20160120
 
 - "Laden"/"Sichern" Knöpfe bei Regeln nach oben links verschoben 
-- Diverse Verbesserungen
 - todo Liste in unit1.pas
 
 # 20160115

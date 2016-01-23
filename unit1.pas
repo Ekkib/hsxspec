@@ -1,17 +1,12 @@
 unit Unit1;       // quick & dirty. Schön kommt irgendwann später, :-)
 
 { to do :
-- Initialisierungen aufräumen !
-- Debug Flag
-- Debug Minuten, Sekunden
 - Dropdown Listen in den Regeln mit aktuellen Werten füttern
-- Schleife in Alles_SpeichernClick
-- Regel : Zeitanzeige in Std Min Sec
-- Mittelwertkiste nach Regel xx,  Tempmittelwert in Maske
-- Listen in die .ini Datei
+- Feste Werte in Schleifen gegen Konstante tauschen
+- Listen in die .ini Datei, alles in einer Sektion, unabhg. von var name
+- Mitternacht neues Programm & alles neu laden
+- geplante Erweiterungen und bekannte Bugs in getrennter Datei, evtl. github ?
 }
-
-// geplante Erweiterungen und bekannte Bugs in getrennter Datei
 
 {$mode objfpc}{$H+}
 
@@ -21,7 +16,7 @@ uses
   Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
   ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
 
-const Version    = 'HSX_spec 20160121' ;  lizenz_text =
+const Version    = 'HSX_spec 20160123' ;  lizenz_text =
 
  'Heizungssteuerung HSX mit 1-Wire Temperatur-Sensoren'          + #13 + #13 +
  'Version : ' + version                                          + #13 + #13 +
@@ -49,47 +44,9 @@ const Version    = 'HSX_spec 20160121' ;  lizenz_text =
 'BESTIMMTEN ZWECK. Die Nutzung dieser Software erfolgt auf eigenes Risiko!' ;
 
 
- { MIT
- Copyright (c) <year> <copyright holders>
- Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
 
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
- OR OTHER DEALINGS IN THE SOFTWARE.
-  }
-
- {
-
- 'This program is free software: you can redistribute it and/or modify' + #13 +
- 'it under the terms of the GNU General Public License as published by' + #13 +
- 'the Free Software Foundation, either version 3 of the License, or'    + #13 +
- '(at your option) any later version. '                                 + #13 +
-
- 'This program is distributed in the hope that it will be useful,'      + #13 +
- 'but WITHOUT ANY WARRANTY; without even the implied warranty of '      + #13 +
- 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the '       + #13 +
- 'GNU General Public License for more details. '                        + #13 +
-
- 'You should have received a copy of the GNU General Public License '   + #13 +
- 'along with this program.  If not, see <http://www.gnu.org/licenses/>' + #13 ;
-}
-
-const
-      CmaxRegler = 8 ;  maxT = 12 ; MaxAktor = 8 ;// etwas unelegant, aber einfach
+const                                           //etwas unelegant, aber einfach
+    CmaxRegler = 8 ;  maxT = 12 ; MaxAktor = 8 ; maxStuetz = 10 ;
 
 type
 
@@ -100,7 +57,8 @@ type
     cre_Tempboxes: TButton;
     Debug_Flag: TCheckBox;
     DatumZeit: TEdit;
-    LabeledEdit1: TLabeledEdit;
+    Edit1: TEdit;
+    Edit2: TEdit;
     Tagesregel: TButton;
     Erstelle_Regeln: TButton;
     Einstellungen: TButton;
@@ -115,7 +73,6 @@ type
     HzFreitag: TComboBox;
     HzSamstag: TComboBox;
     HzSonntag: TComboBox;
-    Edit1: TEdit;
     Montag: TLabel;
     Dienstag: TLabel;
     Mittwoch: TLabel;
@@ -128,6 +85,7 @@ type
     Timer1: TTimer;
     procedure Alles_SpeichernClick(Sender: TObject);
     procedure cre_TempboxesClick(Sender: TObject);
+    procedure Edit1Change(Sender: TObject);
     procedure HzMontagChange(Sender: TObject);
     procedure Debug_FlagChange(Sender: TObject);
     procedure Erstelle_RegelnClick(Sender: TObject);
@@ -146,6 +104,9 @@ type
     function cre_Ini_Time (xsection, xname : string; xtime : TTime) : TTime ;
     function Pindex (pdate : TDateTime) : Integer  ;
     function DayToPrg (WTag : Integer) : Integer ;
+    function IntToHMS (isecs : Integer)  : string ;
+    function HMSToInt (hmsstr : string)  :  Integer ;
+    function Hz_Tab_Wert (lookup : string) : Integer ;
 
   private
     { private declarations }
@@ -154,10 +115,13 @@ type
     IniFile : TIniFile ;
     rkx, N_Regler, N_Programm  : array [1 .. CmaxRegler] of string ;
     N_TMessstelle : array [1 .. MaxT] of string ;
-    N_Aktoren : array [1 .. MaxAktor] of string ;
+    N_Aktoren   : array [1 .. MaxAktor] of string ;
+    Hz_Stuetz   : array [1 .. maxStuetz] of string ;
+    Hz_Stuetz_Tt : array [1 .. maxStuetz, 1 .. 2] of integer ;
     ini_indices  : TStrings ;
     Regeln_erstellt : Boolean ;
     xLabeledEdit : TLabeledEdit ;
+    xLabel : TLabel ;
   end;
 
 var
@@ -167,6 +131,8 @@ implementation
 
 // uses regel_nn ;
 
+// uses LCLStrConsts,  LCLType ;
+
 {$R *.lfm}
 
 { TForm1 }
@@ -174,7 +140,6 @@ implementation
 var  regel_i : array [1 .. CmaxRegler ] of TForm2 ;
   li : Integer ;
   i1 : integer ;
-
 
   function TForm1.cre_Ini_String ( xsection, xname, xvalue : string) : string   ;
   var    cis : string ;
@@ -231,7 +196,6 @@ begin
          then ExtractFileName_ohneExtension := fn
          else ExtractFileName_ohneExtension := copy(fn, 1, pos ('.', fn ) -1);
 end ;
-
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
@@ -292,6 +256,21 @@ begin
   N_Programm [7] := cre_ini_string ('Name_Aktoren', 'na_7', 'Pumpe7');
   N_Programm [8] := cre_ini_string ('Name_Aktoren', 'na_7', 'Pumpe8');
 
+  // Stuetzwerte für Heiztabelle
+  Hz_Stuetz [1] := cre_ini_string ('Heiztabelle', 'STm30', '12:00:00');
+  Hz_Stuetz [2] := cre_ini_string ('Heiztabelle', 'STm10', '06:00:00');
+  Hz_Stuetz [3] := cre_ini_string ('Heiztabelle', 'STp00', '04:00:00');
+  Hz_Stuetz [4] := cre_ini_string ('Heiztabelle', 'STp10', '02:00:00');
+  Hz_Stuetz [5] := cre_ini_string ('Heiztabelle', 'STp15', '00:00:00');
+  Hz_Stuetz [6] := cre_ini_string ('Heiztabelle', 'STp50', '00:00:00');
+
+  Hz_Stuetz_Tt [1,1] := -300; Hz_Stuetz_Tt [1,2] := HMSToInt ( Hz_Stuetz [1] ) ;
+  Hz_Stuetz_Tt [2,1] := -100; Hz_Stuetz_Tt [2,2] := HMSToInt ( Hz_Stuetz [2] ) ;
+  Hz_Stuetz_Tt [3,1] :=    0; Hz_Stuetz_Tt [3,2] := HMSToInt ( Hz_Stuetz [3] ) ;
+  Hz_Stuetz_Tt [4,1] :=  100; Hz_Stuetz_Tt [4,2] := HMSToInt ( Hz_Stuetz [4] ) ;
+  Hz_Stuetz_Tt [5,1] :=  150; Hz_Stuetz_Tt [5,2] := HMSToInt ( Hz_Stuetz [5] ) ;
+  Hz_Stuetz_Tt [6,1] :=  500; Hz_Stuetz_Tt [6,2] := HMSToInt ( Hz_Stuetz [6] ) ;
+
   // Readsection
 
 end;
@@ -301,9 +280,9 @@ begin
        P_Laden.Click;
        Erstelle_Regeln.Click;
        Tagesregel.Click;
+       cre_Tempboxes.Click;
        P_Laden.Click; // Kein Doppelmoppel : Regeln müssen erst erstellt werden
 end;
-
 
 
 procedure TForm1.Erstelle_RegelnClick(Sender: TObject);
@@ -382,7 +361,6 @@ begin
       regel_i [2] . Sichern.click  ;
       regel_i [3] . Sichern.click  ;
       regel_i [4] . Sichern.click  ;
-
 end;
 
 
@@ -404,30 +382,123 @@ begin
        xLabeledEdit.Visible := true ;
        // Defaulttemperaturen :
        //Txdef [yi]:=
-       cre_ini_int ('TDefault', 'TDef'+IntToStr (yi), 200 + yi) ; // /10;
+
+       // cre_ini_int ('TDefault', 'TDef'+IntToStr (yi), 200 + yi) ; // /10;
 
     end ;
 
     // Aktorenfelder :
-for yi := 1 to 4 do begin
-  xLabeledEdit         := TLabeledEdit.Create (form1) ;
-  xLabeledEdit.Parent  := form1 ;
-  xLabeledEdit.Name    := 'A' + IntToStr (yi) ;
-  xLabeledEdit.Text :=  N_Programm [yi] ;
-  xLabeledEdit.EditLabel.Caption :=  '00:00:' +IntToStr (yi) + '0' ;
-  xLabeledEdit.LabelPosition     := lpLeft ;
-  xLabeledEdit.Top     := 20 + (yi - 1) * 24 ;
-  xLabeledEdit.Left    := 550  ;
-  xLabeledEdit.Width   := 100 ;
-  xLabeledEdit.Visible := true ;
+  for yi := 1 to 4 do begin
+    xLabeledEdit         := TLabeledEdit.Create (form1) ;
+    xLabeledEdit.Parent  := form1 ;
+    xLabeledEdit.Name    := 'A' + IntToStr (yi) ;
+    xLabeledEdit.Text :=  N_Programm [yi] ;
+    xLabeledEdit.EditLabel.Caption :=  '00:00:00' ;
+    xLabeledEdit.LabelPosition     := lpLeft ;
+    xLabeledEdit.Top     := 20 + (yi - 1) * 24 ;
+    xLabeledEdit.Left    := 550  ;
+    xLabeledEdit.Width   := 100 ;
+    xLabeledEdit.Visible := true ;
+
+    xLabel := Tlabel.Create(form1);
+    xLabel.Parent  := form1 ;
+    xLabel.Name    := 'ATLR' + IntToStr (yi) ;
+    xLabel.Caption :=  '(00:0' + IntToStr (yi) + ':00)' ;
+    xLabel.Top     := 22 + (yi - 1) * 24 ;
+    xLabel.Left    := 655  ;
+    xLabel.Visible := true ;
+
+  end ;
 
 
+end;
+Function TForm1.Hz_Tab_Wert (lookup : string) : Integer ;
+var nakt, ii, hzindex : Integer ;
+    x1, x2, y1, y2, z : Real ;
+    Tstr, Tstr2 : string ; h_neg : Boolean ;
+begin
+   if length (lookup) < 3 then result := 1 else
+      begin
+
+
+      Tstr  := lookup ;
+      Tstr2 := '' ;
+      h_neg := false ;
+      hzindex := 1 ;
+      if Tstr [1] = '-' then h_neg := true ;
+      if (length (Tstr) > 1) and (length (Tstr) < 6) then
+         begin
+            for ii := 1 to length (Tstr) do begin
+               if Tstr [ii] in ['0' .. '9'] then Tstr2 := Tstr2 + TStr [ii] ;
+            end;
+            if length (Tstr2) > 0 then nakt := StrToInt (Tstr2) else nakt := 0;
+            if h_neg then nakt := - nakt;
+         end
+      else  nakt := 7 ;
+
+      for ii := 1 to 5 do
+        begin
+         if  (Hz_Stuetz_Tt [ii,1] <= nakt) and (Hz_Stuetz_Tt [ii+1,1] >= nakt)
+                                                        then hzindex := ii ;
+
+        end;
+
+      x1 := StrToFloat ( IntToStr (Hz_Stuetz_Tt [hzindex   ,1] ) );
+      x2 := StrToFloat ( IntToStr (Hz_Stuetz_Tt [hzindex+1 ,1] ) );
+
+      y1 := StrToFloat ( IntToStr (Hz_Stuetz_Tt [hzindex   ,2] ) );
+      y2 := StrToFloat ( IntToStr (Hz_Stuetz_Tt [hzindex+1 ,2] ) );
+
+      z :=    y1 + ( (y2 - y1 ) * (  (nakt - x1) /  (x2-x1) ) ) ;
+
+      result :=  round (z ) ;
+
+      end;
+end;
+
+procedure TForm1.Edit1Change(Sender: TObject);
+begin
+       edit2.Text :=  IntToHMS ( Hz_Tab_Wert (edit1.Text) );
+end;
+
+function twodig (indig : string) : string ;
+begin
+     if length (indig) = 1 then result := '0' + indig
+                           else result := indig ;
+end;
+
+function TForm1.IntToHMS (isecs : Integer)  : string ;
+var ihr, imn, isc : Integer ;
+begin
+    ihr :=  isecs div (60*60) ;
+    imn := (isecs div 60 ) mod 60  ;
+    isc :=  isecs - ( (isecs div 60 ) * 60 ) ;
+    result := twodig (IntToStr (ihr)) + ':' +
+              twodig (IntToStr (imn)) + ':' +
+              twodig (IntToStr (isc)) ;
+end ;
+
+
+function TForm1.HMSToInt (hmsstr : string)  :  Integer ;
+var hmsstrl : string ;
+begin
+     if length (hmsstr) = 8 then begin
+     hmsstrl := hmsstr ;
+     if not ( hmsstrl [1] in ['0' .. '9'] ) then hmsstrl [1] := '0' ;
+     if not ( hmsstrl [2] in ['0' .. '9'] ) then hmsstrl [2] := '0' ;
+     if not ( hmsstrl [4] in ['0' .. '9'] ) then hmsstrl [4] := '0' ;
+     if not ( hmsstrl [5] in ['0' .. '9'] ) then hmsstrl [5] := '0' ;
+     if not ( hmsstrl [7] in ['0' .. '9'] ) then hmsstrl [7] := '0' ;
+     if not ( hmsstrl [8] in ['0' .. '9'] ) then hmsstrl [8] := '0' ;
+
+     result :=  StrToInt (copy (hmsstrl,1,2  ) ) * 3600 +
+                StrToInt (copy (hmsstrl,4,2  ) ) * 60   +
+                StrToInt (copy (hmsstrl,7,2  ) )  ;
+     end else result := 0 ;
 end ;
 
 
 
-
-end;
 
 procedure TForm1.HzMontagChange(Sender: TObject);
 begin
@@ -450,7 +521,6 @@ procedure TForm1.EinstellungenClick(Sender: TObject);
 begin
       Form4.ShowModal;
 end;
-
 
 procedure TForm1.Hello_WorldClick(Sender: TObject);
 begin
@@ -523,9 +593,9 @@ end;
 var Altes_Programm : Integer ;
 
 procedure TForm1.Timer1Timer(Sender: TObject);
+var lmax : integer ;
 begin
-  inc (i1) ;
-  edit1.text := IntToStr (i1) ;
+  inc (i1) ; // edit1.text := IntToStr (i1) ;
   DatumZeit.Text := DateTimeToStr (now)  ;
 
   if i1 > 3 then begin   // nach 3 Sekunden sollte alles eingeschwungen sein
@@ -541,11 +611,71 @@ begin
 
     if Altes_Programm <> Heizprogramme.ItemIndex then P_Laden.Click ;
 
+    lmax := regel_i[1].nDispT ;
+    if regel_i[2].nDispT > lmax then lmax := regel_i[2].nDispT ;
+    if regel_i[3].nDispT > lmax then lmax := regel_i[3].nDispT ;
+    if regel_i[4].nDispT > lmax then lmax := regel_i[4].nDispT ;
+
+    TLabel(FindComponent('ATLR1')).caption := '('+ IntToHMS (lmax)+ ')'  ;
+
+    if lmax > 0 then begin with TLabeledEdit (FindComponent('A1')) do
+        begin
+          color := clLime ;
+          EditLabel.Caption := IntToHMS (HMSToInt (EditLabel.Caption) +1 ) ;
+        end
+       end
+     else TLabeledEdit (FindComponent('A1')).color := clRed ;
+
   end;
 
   Altes_Programm := Heizprogramme.ItemIndex ;
 
+  // Aktorenstatistik :
+
+
+
 end;
 
 end.
+
+
+ { MIT
+ Copyright (c) <year> <copyright holders>
+ Permission is hereby granted, free of charge, to any person
+ obtaining a copy of this software and associated documentation files
+ (the "Software"), to deal in the Software without restriction,
+ including without limitation the rights to use, copy, modify, merge,
+ publish, distribute, sublicense, and/or sell copies of the Software,
+ and to permit persons to whom the Software is furnished to do so,
+ subject to the following conditions:
+
+ The above copyright notice and this permission notice shall be
+ included in all copies or substantial portions of the Software.
+
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+ NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+ HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+ WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
+ OR OTHER DEALINGS IN THE SOFTWARE.
+  }
+
+ {
+
+ 'This program is free software: you can redistribute it and/or modify' + #13 +
+ 'it under the terms of the GNU General Public License as published by' + #13 +
+ 'the Free Software Foundation, either version 3 of the License, or'    + #13 +
+ '(at your option) any later version. '                                 + #13 +
+
+ 'This program is distributed in the hope that it will be useful,'      + #13 +
+ 'but WITHOUT ANY WARRANTY; without even the implied warranty of '      + #13 +
+ 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the '       + #13 +
+ 'GNU General Public License for more details. '                        + #13 +
+
+ 'You should have received a copy of the GNU General Public License '   + #13 +
+ 'along with this program.  If not, see <http://www.gnu.org/licenses/>' + #13 ;
+}
+
 

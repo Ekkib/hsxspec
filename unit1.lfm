@@ -18,14 +18,6 @@ object Form1: TForm1
     OnClick = EndeClick
     TabOrder = 0
   end
-  object Edit1: TEdit
-    Left = 768
-    Height = 21
-    Top = 336
-    Width = 80
-    TabOrder = 1
-    Text = 'Edit1'
-  end
   object Calendar1: TCalendar
     Left = 144
     Height = 153
@@ -33,7 +25,7 @@ object Form1: TForm1
     Width = 162
     DateTime = 41761
     OnDblClick = Calendar1DblClick
-    TabOrder = 2
+    TabOrder = 1
   end
   object Hello_World: TButton
     Left = 392
@@ -42,7 +34,7 @@ object Form1: TForm1
     Width = 112
     Caption = 'Hello_World'
     OnClick = Hello_WorldClick
-    TabOrder = 3
+    TabOrder = 2
   end
   object Memo1: TMemo
     Left = 744
@@ -55,7 +47,7 @@ object Form1: TForm1
       'Urlaub'
       ''
     )
-    TabOrder = 4
+    TabOrder = 3
     Visible = False
   end
   object P_Laden: TButton
@@ -65,7 +57,7 @@ object Form1: TForm1
     Width = 163
     Caption = 'Alles_Laden'
     OnClick = P_LadenClick
-    TabOrder = 5
+    TabOrder = 4
   end
   object HzMontag: TComboBox
     Left = 236
@@ -74,7 +66,7 @@ object Form1: TForm1
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
-    TabOrder = 6
+    TabOrder = 5
     Text = 'HzMontag'
   end
   object HzDienstag: TComboBox
@@ -84,7 +76,7 @@ object Form1: TForm1
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
-    TabOrder = 7
+    TabOrder = 6
     Text = 'HzDienstag'
   end
   object HzMittwoch: TComboBox
@@ -94,7 +86,7 @@ object Form1: TForm1
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
-    TabOrder = 8
+    TabOrder = 7
     Text = 'HzMittwoch'
   end
   object HzDonnerstag: TComboBox
@@ -104,7 +96,7 @@ object Form1: TForm1
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
-    TabOrder = 9
+    TabOrder = 8
     Text = 'HzDonnerstag'
   end
   object HzFreitag: TComboBox
@@ -114,7 +106,7 @@ object Form1: TForm1
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
-    TabOrder = 10
+    TabOrder = 9
     Text = 'HzFreitag'
   end
   object HzSamstag: TComboBox
@@ -124,7 +116,7 @@ object Form1: TForm1
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
-    TabOrder = 11
+    TabOrder = 10
     Text = 'HzSamstag'
   end
   object HzSonntag: TComboBox
@@ -134,7 +126,7 @@ object Form1: TForm1
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
-    TabOrder = 12
+    TabOrder = 11
     Text = 'HzSonntag'
   end
   object Montag: TLabel
@@ -216,25 +208,26 @@ object Form1: TForm1
       'c'
       'd'
     )
-    TabOrder = 13
+    TabOrder = 12
   end
   object Erstelle_Regeln: TButton
     Left = 760
     Height = 25
-    Top = 396
+    Top = 496
     Width = 133
     Caption = 'Erstelle_Regeln'
     OnClick = Erstelle_RegelnClick
-    TabOrder = 14
+    TabOrder = 13
+    Visible = False
   end
   object Einstellungen: TButton
     Left = 760
     Height = 25
-    Top = 448
+    Top = 408
     Width = 133
     Caption = 'Einstellungen'
     OnClick = EinstellungenClick
-    TabOrder = 15
+    TabOrder = 14
   end
   object Tagesregel: TButton
     Left = 330
@@ -243,14 +236,14 @@ object Form1: TForm1
     Width = 139
     Caption = 'Tagesregel'
     OnClick = TagesregelClick
-    TabOrder = 16
+    TabOrder = 15
   end
   object DatumZeit: TEdit
     Left = 328
     Height = 21
     Top = 8
     Width = 155
-    TabOrder = 17
+    TabOrder = 16
     Text = 'DatumZeit'
   end
   object Alles_Speichern: TButton
@@ -260,7 +253,7 @@ object Form1: TForm1
     Width = 163
     Caption = 'Alles_Sichern'
     OnClick = Alles_SpeichernClick
-    TabOrder = 18
+    TabOrder = 17
   end
   object Debug_Flag: TCheckBox
     Left = 392
@@ -269,34 +262,34 @@ object Form1: TForm1
     Width = 77
     Caption = 'Debug_Flag'
     OnChange = Debug_FlagChange
-    TabOrder = 19
+    TabOrder = 18
   end
   object cre_Tempboxes: TButton
     Left = 760
     Height = 25
-    Top = 488
+    Top = 456
     Width = 133
     Caption = 'cre_Tempboxes'
     OnClick = cre_TempboxesClick
-    TabOrder = 20
+    TabOrder = 19
+    Visible = False
   end
-  object LabeledEdit1: TLabeledEdit
-    Left = 760
+  object Edit1: TEdit
+    Left = 429
     Height = 21
-    Top = 32
+    Top = 422
     Width = 80
-    EditLabel.AnchorSideLeft.Control = LabeledEdit1
-    EditLabel.AnchorSideRight.Control = LabeledEdit1
-    EditLabel.AnchorSideRight.Side = asrBottom
-    EditLabel.AnchorSideBottom.Control = LabeledEdit1
-    EditLabel.Left = 760
-    EditLabel.Height = 13
-    EditLabel.Top = 16
-    EditLabel.Width = 80
-    EditLabel.Caption = 'LabeledEdit1'
-    EditLabel.ParentColor = False
+    OnChange = Edit1Change
+    TabOrder = 20
+    Text = 'Edit1'
+  end
+  object Edit2: TEdit
+    Left = 560
+    Height = 21
+    Top = 422
+    Width = 96
     TabOrder = 21
-    Text = 'LabeledEdit1'
+    Text = 'Edit2'
   end
   object Timer1: TTimer
     OnTimer = Timer1Timer
