@@ -53,9 +53,7 @@ procedure TForm3.FormShow(Sender: TObject);
 var pi : Integer ;
 begin
      radiogroup1.Items := unit1.form1.Heizprogramme.items ;
-
-     edit1.Text:= DateToStr (unit1.Form1.Calendar1.DateTime) ;
-
+     edit1.Text := DateToStr (unit1.Form1.Calendar1.DateTime) ;
      edit2.Text := Dindex ;
 
    //  pi := form1.cre_Ini_Int ( 'TProgramme', Dindex,
@@ -64,24 +62,22 @@ begin
 
      pi := form1.IniFile.ReadInteger ( 'TProgramme',
                         Dindex ,
-                        form1.DayToPrg (
-                        form1.Pindex ( unit1.Form1.Calendar1.DateTime ) ) );
+                        form1.Pindex ( unit1.Form1.Calendar1.DateTime ) ) ;
 
      radiogroup1.ItemIndex := pi ;
-
-     Edit3.Text:= IntToStr (form1.Pindex ( unit1.Form1.Calendar1.DateTime ) ) ;
-
+     Edit3.Text:= IntToStr (pi);//(form1.Pindex ( unit1.Form1.Calendar1.DateTime ) ) ;
 end;
 
 procedure TForm3.RadioGroup1Click(Sender: TObject);
 begin
      if radiogroup1.ItemIndex <>
            form1.IniFile.ReadInteger ( 'TProgramme', Dindex,
-                     form1.DayToPrg (
-                     form1.Pindex ( unit1.Form1.Calendar1.DateTime ) ) )
+                     form1.Pindex ( unit1.Form1.Calendar1.DateTime )  )
      then
       form1.IniFile.WriteInteger ('TProgramme', Dindex,
                                    radiogroup1.ItemIndex );
+
+     Edit3.Text:= IntToStr (radiogroup1.ItemIndex);
 end;
 
 end.

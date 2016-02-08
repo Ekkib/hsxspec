@@ -1,11 +1,11 @@
 unit Unit1;       // quick & dirty. Schön kommt irgendwann später, :-)
 
 { to do :
-- Dropdown Listen in den Regeln mit aktuellen Werten füttern
-- Feste Werte in Schleifen gegen Konstante tauschen
+- Feste Werte in Schleifen gegen Konstante tauschen, evtl. zur Laufzeit bestimmen
 - Listen in die .ini Datei, alles in einer Sektion, unabhg. von var name
-- Mitternacht neues Programm & alles neu laden
-- geplante Erweiterungen und bekannte Bugs in getrennter Datei, evtl. github ?
+- geplante Erweiterungen und bekannte Bugs in getrennter Datei, auch auf github
+- Filtern und Umsortieren von Messstellen und Aktoren
+- Knopf : Einstellungen
 }
 
 {$mode objfpc}{$H+}
@@ -13,10 +13,10 @@ unit Unit1;       // quick & dirty. Schön kommt irgendwann später, :-)
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
-  ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
+  Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
+  StdCtrls, ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
 
-const Version    = 'HSX_spec 20160123' ;  lizenz_text =
+const Version    = 'HSX 20160208' ;  lizenz_text =
 
  'Heizungssteuerung HSX mit 1-Wire Temperatur-Sensoren'          + #13 + #13 +
  'Version : ' + version                                          + #13 + #13 +
@@ -30,13 +30,13 @@ const Version    = 'HSX_spec 20160123' ;  lizenz_text =
 'oeffentlich zugaenglich machen, Abwandlungen und Bearbeitungen des'      +#13+
 'Werkes bzw. Inhaltes anfertigen zu den folgenden Bedingungen:'           +#13+
 ' '                                                                       +#13+
-'Namensnennung - Sie muessen den Namen des Autors/Rechteinhabers in der'  +#13+
-'von ihm festgelegten Weise nennen.'                                      +#13+
+'Namensnennung - Sie muessen den Namen des Autors/Rechteinhabers'         +#13+
+'                in der von ihm festgelegten Weise nennen.'               +#13+
 'Keine kommerzielle Nutzung - Dieses Werk bzw. dieser Inhalt darf'        +#13+
-'nicht fuer kommerzielle Zwecke verwendet werden.'                        +#13+
-'Wobei gilt: Verzichtserklaerung - Jede der vorgenannten Bedingungen kann'+#13+
-'aufgehoben werden, sofern Sie die ausdrueckliche Einwilligung des'       +#13+
-'Rechteinhabers dazu erhalten.'                                           +#13+
+'                nicht fuer kommerzielle Zwecke verwendet werden.'        +#13+
+'Wobei gilt: Verzichtserklaerung - Jede der vorgenannten Bedingungen'     +#13+
+'              kann aufgehoben werden, sofern Sie die ausdrueckliche'     +#13+
+'              Einwilligung des Rechteinhabers dazu erhalten.'            +#13+
 ' '                                                                       +#13+
 'Die Veröffentlichung dieser Software erfolgt in der Hoffnung, dass sie'   +#13+
 'Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die'+#13+
@@ -57,8 +57,8 @@ type
     cre_Tempboxes: TButton;
     Debug_Flag: TCheckBox;
     DatumZeit: TEdit;
-    Edit1: TEdit;
-    Edit2: TEdit;
+    ListBox1: TListBox;
+    Memo1: TMemo;
     Tagesregel: TButton;
     Erstelle_Regeln: TButton;
     Einstellungen: TButton;
@@ -81,11 +81,9 @@ type
     Heizprogramme: TRadioGroup;
     Samstag: TLabel;
     Sonntag: TLabel;
-    Memo1: TMemo;
     Timer1: TTimer;
     procedure Alles_SpeichernClick(Sender: TObject);
     procedure cre_TempboxesClick(Sender: TObject);
-    procedure Edit1Change(Sender: TObject);
     procedure HzMontagChange(Sender: TObject);
     procedure Debug_FlagChange(Sender: TObject);
     procedure Erstelle_RegelnClick(Sender: TObject);
@@ -118,10 +116,15 @@ type
     N_Aktoren   : array [1 .. MaxAktor] of string ;
     Hz_Stuetz   : array [1 .. maxStuetz] of string ;
     Hz_Stuetz_Tt : array [1 .. maxStuetz, 1 .. 2] of integer ;
+    X_T : array [1 .. MaxT] of real ;
+       // 24 Werte für gleitenden Durchschnitt pro Messwert. Kann optimiert
+       // werden, sollte der Speicher eng werden :
+    X_T_quer : array [1 .. MaxT, 0 .. 23 ] of real ;
     ini_indices  : TStrings ;
     Regeln_erstellt : Boolean ;
     xLabeledEdit : TLabeledEdit ;
     xLabel : TLabel ;
+    old_secs : Integer ;
   end;
 
 var
@@ -140,6 +143,7 @@ implementation
 var  regel_i : array [1 .. CmaxRegler ] of TForm2 ;
   li : Integer ;
   i1 : integer ;
+  Altes_Programm : Integer ;
 
   function TForm1.cre_Ini_String ( xsection, xname, xvalue : string) : string   ;
   var    cis : string ;
@@ -205,8 +209,18 @@ begin
                   ExtractFileName_ohneExtension (ParamStr (0)) + '.ini' ) ;
 
   iniFile.WriteString ('Allgemeine_Infos', 'Programmversion', Version ) ;
+  iniFile.WriteString ('Allgemeine_Infos', 'zuletzt_aufgerufen', Form1.Caption);
 
   debug_flag.Checked := create_Ini_Bool ('Einstellungen', 'debug', false) ;
+
+  iniFile.WriteString('Mehr_Info','Sektion_info', 'bislang keine Read_section');
+
+  with form1.IniFile do begin
+     top    := Cre_Ini_Int ('Zentrale', 'top',    top    ) ;
+     left   := Cre_Ini_Int ('Zentrale', 'left',   left   ) ;
+     width  := Cre_Ini_Int ('Zentrale', 'width',  width  ) ;
+     height := Cre_Ini_Int ('Zentrale', 'height', height ) ;
+  end;
 
   // Demnächst auch variabel ! :-)
   // Name_Regler
@@ -230,6 +244,27 @@ begin
   N_Programm [6] := cre_ini_string ('Name_Programm', 'np_6', 'Programm_1');
   N_Programm [7] := cre_ini_string ('Name_Programm', 'np_7', 'Programm_2');
 
+  Heizprogramme.Items.Clear;
+  for li := 1 to 7 do if N_Programm [li] <> '' then
+                                   Heizprogramme.Items.Append(N_Programm [li]);
+        // AddText (unit1.form1.inifile.ReadString
+        //  ('Name_Programm', Memo1.Lines.Strings[li-1], 'xx'));
+
+  HzMontag.Items     := Heizprogramme.Items ;
+  HzDienstag.Items   := Heizprogramme.Items ;
+  HzMittwoch.Items   := Heizprogramme.Items ;
+  HzDonnerstag.Items := Heizprogramme.Items ;
+  HzFreitag.Items    := Heizprogramme.Items ;
+  HzSamstag.Items    := Heizprogramme.Items ;
+  HzSonntag.Items    := Heizprogramme.Items ;
+  with HzMontag     do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzDienstag   do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzMittwoch   do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzDonnerstag do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzFreitag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
+  with HzSamstag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 1 );
+  with HzSonntag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 1 );
+
   // Name_TMessstelle
 
   N_TMessstelle [1] := cre_ini_string ('Name_TMessstelle', 'nt_1', 'TWarmwasser');
@@ -239,8 +274,8 @@ begin
   N_TMessstelle [5] := cre_ini_string ('Name_TMessstelle', 'nt_5', 'TAussen_Nord');
   N_TMessstelle [6] := cre_ini_string ('Name_TMessstelle', 'nt_6', 'TAussen_Sued');
   N_TMessstelle [7] := cre_ini_string ('Name_TMessstelle', 'nt_7', 'TWohnz_Vor');
-  N_TMessstelle [8] := cre_ini_string ('Name_TMessstelle', 'nt_4', 'TWohnz_Rueck');
-  N_TMessstelle [9] := cre_ini_string ('Name_TMessstelle', 'nt_5', 'TRadiat_Vor');
+  N_TMessstelle [8] := cre_ini_string ('Name_TMessstelle', 'nt_8', 'TWohnz_Rueck');
+  N_TMessstelle [9] := cre_ini_string ('Name_TMessstelle', 'nt_9', 'TRadiat_Vor');
   N_TMessstelle [10]:= cre_ini_string ('Name_TMessstelle','nt_10', 'TRadiat_Rueck');
   N_TMessstelle [11]:= cre_ini_string ('Name_TMessstelle','nt_11', 'TWGart_Vor');
   N_TMessstelle [12]:= cre_ini_string ('Name_TMessstelle','nt_12', 'TWGart_Rueck');
@@ -254,16 +289,18 @@ begin
   N_Programm [5] := cre_ini_string ('Name_Aktoren', 'na_5', 'Pumpe5');
   N_Programm [6] := cre_ini_string ('Name_Aktoren', 'na_6', 'Pumpe6');
   N_Programm [7] := cre_ini_string ('Name_Aktoren', 'na_7', 'Pumpe7');
-  N_Programm [8] := cre_ini_string ('Name_Aktoren', 'na_7', 'Pumpe8');
+  N_Programm [8] := cre_ini_string ('Name_Aktoren', 'na_8', 'Pumpe8');
 
   // Stuetzwerte für Heiztabelle
+  // Help=Stuetzstellen fuer Brennerlaufzeiten abhaegig von der Temperatur
   Hz_Stuetz [1] := cre_ini_string ('Heiztabelle', 'STm30', '12:00:00');
   Hz_Stuetz [2] := cre_ini_string ('Heiztabelle', 'STm10', '06:00:00');
   Hz_Stuetz [3] := cre_ini_string ('Heiztabelle', 'STp00', '04:00:00');
   Hz_Stuetz [4] := cre_ini_string ('Heiztabelle', 'STp10', '02:00:00');
   Hz_Stuetz [5] := cre_ini_string ('Heiztabelle', 'STp15', '00:00:00');
-  Hz_Stuetz [6] := cre_ini_string ('Heiztabelle', 'STp50', '00:00:00');
+  Hz_Stuetz [6] := cre_ini_string ('Heiztabelle', 'STp60', '00:00:00');
 
+  // Temoperaturen in Zehntelgrad : -300 = -30 Grad, etc.
   Hz_Stuetz_Tt [1,1] := -300; Hz_Stuetz_Tt [1,2] := HMSToInt ( Hz_Stuetz [1] ) ;
   Hz_Stuetz_Tt [2,1] := -100; Hz_Stuetz_Tt [2,2] := HMSToInt ( Hz_Stuetz [2] ) ;
   Hz_Stuetz_Tt [3,1] :=    0; Hz_Stuetz_Tt [3,2] := HMSToInt ( Hz_Stuetz [3] ) ;
@@ -277,16 +314,14 @@ end;
 
 procedure TForm1.FormShow(Sender: TObject);
 begin
-       P_Laden.Click;
        Erstelle_Regeln.Click;
        Tagesregel.Click;
        cre_Tempboxes.Click;
-       P_Laden.Click; // Kein Doppelmoppel : Regeln müssen erst erstellt werden
+       P_Laden.Click;
 end;
 
-
 procedure TForm1.Erstelle_RegelnClick(Sender: TObject);
-var fc_i : Integer ;
+var fc_i, fc_j : Integer ;
 begin
 
   // Formulare für Regelkreise erstellen
@@ -301,11 +336,43 @@ begin
 
        regel_i[fc_i].Name    := 'Regel' + IntToStr (fc_i) ;
        regel_i[fc_i].caption := inifile.ReadString
-           ('Name_Regler', ini_indices.strings [fc_i - 1], 'xx');
+                         ('Name_Regler', ini_indices.strings [fc_i - 1], 'xx');
 
            // Heizprogramme.Items.Strings[fc_i - 1] ;
+
        regel_i[fc_i].Tag     := fc_i ;
        regel_i[fc_i].visible := true ;
+
+           // Drop-Down Menues füllen
+
+       ListBox1.Items.Clear ;
+       ListBox1.Items.Append(' ');
+
+       for fc_j := 1 to maxAktor do ListBox1.Items.Append( N_Programm [fc_j] );
+
+       regel_i[fc_i].Aggregat1.Items := ListBox1.Items ;
+       regel_i[fc_i].Aggregat1.ItemIndex:= 0 ;
+       regel_i[fc_i].Aggregat2.Items := ListBox1.Items ;
+       regel_i[fc_i].Aggregat2.ItemIndex:= 0 ;
+
+       regel_i[fc_i].bedingung1.Items.Clear ;
+       for fc_j := 1 to maxT do
+                   regel_i[fc_i].bedingung1.Items.Append(N_TMessstelle [fc_j]);
+       regel_i[fc_i].bedingung1.ItemIndex:= 0 ;
+
+       regel_i[fc_i].bedingung2.Items := regel_i[fc_i].bedingung1.Items ;
+       regel_i[fc_i].bedingung2.ItemIndex:= 0 ;
+
+       regel_i[fc_i].bedingung3.Items := regel_i[fc_i].bedingung1.Items ;
+       regel_i[fc_i].bedingung3.ItemIndex:= 0 ;
+
+       // Die Anfangsansichten justieren :
+
+       regel_i[fc_i].Top     := (fc_i * 45 )- 38 ;
+       regel_i[fc_i].Left    := (fc_i * 45 ) ;
+       regel_i[fc_i].Width   := 616 ;
+       regel_i[fc_i].Height  := 585 ;
+
 
        // regel_i[fc_i].xshow   := true ;
     {
@@ -351,18 +418,23 @@ begin
 
    if not Regeln_erstellt then Regeln_erstellt := true  ;
 
-
 end;
 
 procedure TForm1.Alles_SpeichernClick(Sender: TObject);
 begin
       // :-)
-      regel_i [1] . Sichern.click ;
+      regel_i [1] . Sichern.click  ;
       regel_i [2] . Sichern.click  ;
       regel_i [3] . Sichern.click  ;
       regel_i [4] . Sichern.click  ;
-end;
 
+      with form1.IniFile do begin
+         WriteInteger ('Zentrale', 'top',    top    ) ;
+         WriteInteger ('Zentrale', 'left',   left   ) ;
+         WriteInteger ('Zentrale', 'width',  width  ) ;
+         WriteInteger ('Zentrale', 'height', height ) ;
+      end;
+end;
 
 procedure TForm1.cre_TempboxesClick(Sender: TObject);
 var
@@ -388,7 +460,7 @@ begin
     end ;
 
     // Aktorenfelder :
-  for yi := 1 to 4 do begin
+  for yi := 1 to MaxAktor do begin
     xLabeledEdit         := TLabeledEdit.Create (form1) ;
     xLabeledEdit.Parent  := form1 ;
     xLabeledEdit.Name    := 'A' + IntToStr (yi) ;
@@ -409,9 +481,8 @@ begin
     xLabel.Visible := true ;
 
   end ;
-
-
 end;
+
 Function TForm1.Hz_Tab_Wert (lookup : string) : Integer ;
 var nakt, ii, hzindex : Integer ;
     x1, x2, y1, y2, z : Real ;
@@ -419,7 +490,6 @@ var nakt, ii, hzindex : Integer ;
 begin
    if length (lookup) < 3 then result := 1 else
       begin
-
 
       Tstr  := lookup ;
       Tstr2 := '' ;
@@ -456,11 +526,6 @@ begin
       end;
 end;
 
-procedure TForm1.Edit1Change(Sender: TObject);
-begin
-       edit2.Text :=  IntToHMS ( Hz_Tab_Wert (edit1.Text) );
-end;
-
 function twodig (indig : string) : string ;
 begin
      if length (indig) = 1 then result := '0' + indig
@@ -477,7 +542,6 @@ begin
               twodig (IntToStr (imn)) + ':' +
               twodig (IntToStr (isc)) ;
 end ;
-
 
 function TForm1.HMSToInt (hmsstr : string)  :  Integer ;
 var hmsstrl : string ;
@@ -497,14 +561,10 @@ begin
      end else result := 0 ;
 end ;
 
-
-
-
 procedure TForm1.HzMontagChange(Sender: TObject);
 begin
   iniFile.WriteInteger ('Tagesvorwahl', TComboBox(Sender).Name ,
                                         TComboBox(Sender).ItemIndex ) ;
-
 end;
 
 procedure TForm1.Debug_FlagChange(Sender: TObject);
@@ -524,114 +584,91 @@ end;
 
 procedure TForm1.Hello_WorldClick(Sender: TObject);
 begin
-        showmessage ('hello world') ;
+        showmessage ('hello world' + #13 + #13 + '~ HSX Prototyp ~'
+        + #13 + #13 + 'auf vier Regelbausteine eingeschränkt') ;
         showmessage (lizenz_text)   ;
 end;
 
 procedure TForm1.P_LadenClick(Sender: TObject);
-var Old_index : Integer ;
 begin
-
-  unit1.form1.inifile.ReadSection('Name_Programm' , Memo1.Lines );
-  Old_index := Heizprogramme.ItemIndex ;
-  Heizprogramme.Items.Clear;
-  for li := 1 to Memo1.Lines.Count do
-      Heizprogramme.Items.AddText (unit1.form1.inifile.ReadString
-         ('Name_Programm', Memo1.Lines.Strings[li-1], 'xx'));
-
-  // Namen_Programm.Lines.AddText (unit1.form1.inifile.ReadString
-  //     ('Name_Programm', Dummylines1.Lines.Strings[li-1], 'xx'));
-
-  // Heizprogramme.Items := memo1.Lines  ;
-
-  HzMontag.Items     := Heizprogramme.Items ;
-  HzDienstag.Items   := Heizprogramme.Items ;
-  HzMittwoch.Items   := Heizprogramme.Items ;
-  HzDonnerstag.Items := Heizprogramme.Items ;
-  HzFreitag.Items    := Heizprogramme.Items ;
-  HzSamstag.Items    := Heizprogramme.Items ;
-  HzSonntag.Items    := Heizprogramme.Items ;
-  with HzMontag     do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
-  with HzDienstag   do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
-  with HzMittwoch   do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
-  with HzDonnerstag do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
-  with HzFreitag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 0 );
-  with HzSamstag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 1 );
-  with HzSonntag    do ItemIndex  := cre_ini_int ( 'Tagesvorwahl', name, 1 );
-
-  if Old_index > Heizprogramme.Items.Count then Old_index := 0 ;
-
-  Heizprogramme.ItemIndex := Old_index;
-
    if Regeln_erstellt then begin
-      if heizprogramme.itemindex < 0 then heizprogramme.itemindex := 0 ;  // ?
       regel_i [1] . Laden.click ;
       regel_i [2] . Laden.click  ;
       regel_i [3] . Laden.click  ;
       regel_i [4] . Laden.click  ;
-  end ;
-
-
+   end ;
 end;
 
-
-Function TForm1.Pindex (pdate : TDateTime) : Integer  ;
+Function TForm1.Pindex (pdate : TDateTime) : Integer ;   //
 var iday : Integer ;
 begin
    // DayOfWeek startet bei So = 1, wir bei Mo = 1
    iday :=  (( DayOfWeek (pdate) + 5 ) mod 7 ) + 1 ;
    Pindex := Inifile.ReadInteger
-                    ('TProgramme', FormatDateTime('yyyymmdd', pdate), iday );
+                       ('TProgramme', FormatDateTime('yyyymmdd', pdate),
+                       DayToPrg (iday) );
 end ;
 
 procedure TForm1.TagesregelClick(Sender: TObject);
 begin
-      Heizprogramme.ItemIndex := DayToPrg ( Pindex ( now ) ) ;
+      Heizprogramme.ItemIndex := Pindex ( now ) ;
 end;
 
-
-var Altes_Programm : Integer ;
-
 procedure TForm1.Timer1Timer(Sender: TObject);
-var lmax : integer ;
+var lmax, tt_i, tt_j : integer ;
 begin
   inc (i1) ; // edit1.text := IntToStr (i1) ;
   DatumZeit.Text := DateTimeToStr (now)  ;
 
-  if i1 > 3 then begin   // nach 3 Sekunden sollte alles eingeschwungen sein
-    regel_i [1] . dec_tfi ;
-    regel_i [2] . dec_tfi ;
-    regel_i [3] . dec_tfi ;
-    regel_i [4] . dec_tfi ;
+  if HMSToInt ( TimeToStr (now) ) < old_secs then  // Neuer Tag !
+     begin
+           Tagesregel.Click;
+     end;
+  old_secs :=  HMSToInt ( TimeToStr (now) ) ;
 
-    regel_i [1] . berechne_gueltig ;
-    regel_i [2] . berechne_gueltig ;
-    regel_i [3] . berechne_gueltig ;
-    regel_i [4] . berechne_gueltig ;
+  if i1 > 3 then begin   // nach 3 Sekunden sollte alles eingeschwungen sein
+
+  for tt_j := 1 to 4 do // Achtung !!!
+    begin
+       regel_i [tt_j] . Peilwert.Visible:= debug_flag.Checked ;
+       regel_i [tt_j] . dec_tfi ;
+       regel_i [tt_j] . berechne_gueltig ;
+    end ;
 
     if Altes_Programm <> Heizprogramme.ItemIndex then P_Laden.Click ;
 
-    lmax := regel_i[1].nDispT ;
-    if regel_i[2].nDispT > lmax then lmax := regel_i[2].nDispT ;
-    if regel_i[3].nDispT > lmax then lmax := regel_i[3].nDispT ;
-    if regel_i[4].nDispT > lmax then lmax := regel_i[4].nDispT ;
+    for tt_j := 1 to MaxAktor do
+      begin
 
-    TLabel(FindComponent('ATLR1')).caption := '('+ IntToHMS (lmax)+ ')'  ;
+       lmax := 0 ;
 
-    if lmax > 0 then begin with TLabeledEdit (FindComponent('A1')) do
+       for tt_i := 1 to 4 do     // Achtung ! Grenze nicht 4 !
+                             if regel_i[tt_i].Panel5.Color = clLime then
+       begin
+         if (regel_i[tt_i].Aggregat1.items[regel_i[tt_i].Aggregat1.itemindex]
+               = N_Programm [tt_j])
+         and (regel_i[tt_i].nDispT > lmax ) then lmax := regel_i[tt_i].nDispT ;
+
+         if (regel_i[tt_i].Aggregat2.items[regel_i[tt_i].Aggregat2.itemindex]
+               = N_Programm [tt_j])
+         and (regel_i[tt_i].nDispT > lmax ) then lmax := regel_i[tt_i].nDispT ;
+
+       end;
+
+    TLabel(FindComponent('ATLR'+IntToStr(tt_j))).caption :=
+                                                     '('+ IntToHMS (lmax)+ ')';
+
+    if lmax > 0 then begin with TLabeledEdit(FindComponent('A'+IntToStr(tt_j))) do
         begin
           color := clLime ;
           EditLabel.Caption := IntToHMS (HMSToInt (EditLabel.Caption) +1 ) ;
         end
        end
-     else TLabeledEdit (FindComponent('A1')).color := clRed ;
-
+     else TLabeledEdit (FindComponent('A'+IntToStr(tt_j))).color := clRed ;
+    end ;
   end;
 
   Altes_Programm := Heizprogramme.ItemIndex ;
-
-  // Aktorenstatistik :
-
 
 
 end;

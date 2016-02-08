@@ -2,24 +2,21 @@
 HSX Spezifikation
 
 Dieses Programm (geschrieben in Lazarus) dient zunächst allein dem Zweck, eine Benutzerschnittstelle für die 
-Heizungssteuerung HSX zu entwickeln. Ein "rapid prototype" halt.
+Heizungssteuerung HSX zu entwickeln und zu demonstrieren. Ein "rapid prototype" halt.
 
 Dokumentation des HSX Projektes :  https://sites.google.com/site/raspihs1/
 
-Dort gibt es auch auch Links zu Windows und Raspi Executables, im Verzeichnis "Spezifikation".
+Dort gibt es auch auch Links zu Windows und Raspi Executables dieser Quellen, im Verzeichnis "Spezifikation".
 
-Vielleicht wird aus dieser Spezifikation ja tatsächlich irgendwann ein lauffähiges Programm. In den compilierten Programmen laufen die Zeiten. Wer an den Baustellen des Programms (davon gibt es einige) mitarbeiten will, möge sich bitte melden. Abstimmung vermeidet parallele Entwicklungen, ;-) .
+Wenn die Nerven durchgehen wird vielleicht aus dieser Spezifikation ja tatsächlich irgendwann ein lauffähiges Desktop-Programm. In dem Prototyp laufen die Zeiten, die Aggregate werden programmgesteuert geschaltet. Es fehlt nur die Anbindung an die Ausgaben und an den owserver (per fphttpclient, HttpGetText). Wer an den Baustellen des Programms (davon gibt es einige) mitarbeiten will, möge sich bitte melden. Abstimmung vermeidet parallele Entwicklungen, ;-) .
+
+Ziel ist es, die Desktop Oberfläche dieses Programmes gegen eine Smartphone-kompatible WEB-Bedienung auszutauschen.
 
 # Changelog
 
-# 20160123
+# 20160208
 
 - interne Optimierungen
-
-# 20160120
-
-- "Laden"/"Sichern" Knöpfe bei Regeln nach oben links verschoben 
-- todo Liste in unit1.pas
 
 # 20160115
 

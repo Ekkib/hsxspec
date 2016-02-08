@@ -21,6 +21,7 @@ type
     Namen_Programm: TMemo;
     procedure Aenderungen_uebernehmenClick(Sender: TObject);
     procedure FormActivate(Sender: TObject);
+    procedure FormCreate(Sender: TObject);
   private
     { private declarations }
   public
@@ -63,6 +64,11 @@ begin
 
 
 
+
+end;
+
+procedure TForm4.FormCreate(Sender: TObject);
+begin
 
 end;
 
