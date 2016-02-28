@@ -17,7 +17,7 @@ object Form2: TForm2
     ClientWidth = 472
     Color = clYellow
     ParentColor = False
-    TabOrder = 20
+    TabOrder = 19
     object Panel9: TPanel
       Left = 32
       Height = 46
@@ -59,6 +59,15 @@ object Form2: TForm2
       Width = 26
       Caption = 'q'
       TabOrder = 1
+    end
+    object scharf3: TCheckBox
+      Left = 8
+      Height = 17
+      Top = 20
+      Width = 50
+      Caption = 'scharf'
+      OnChange = scharf3Change
+      TabOrder = 2
     end
   end
   object Panel5: TPanel
@@ -215,6 +224,24 @@ object Form2: TForm2
           TabOrder = 5
         end
       end
+    end
+    object ZusBedingung: TLabel
+      Left = 16
+      Height = 13
+      Top = 288
+      Width = 12
+      Caption = '...'
+      ParentColor = False
+      OnClick = ZusBedingungClick
+    end
+    object ZusAggregat: TLabel
+      Left = 16
+      Height = 13
+      Top = 72
+      Width = 12
+      Caption = '...'
+      ParentColor = False
+      OnClick = ZusAggregatClick
     end
   end
   object Sichern: TButton
@@ -506,15 +533,6 @@ object Form2: TForm2
       ParentColor = False
     end
   end
-  object scharf3: TCheckBox
-    Left = 30
-    Height = 17
-    Top = 492
-    Width = 50
-    Caption = 'scharf'
-    OnChange = scharf3Change
-    TabOrder = 15
-  end
   object Bedingung3: TComboBox
     Left = 88
     Height = 21
@@ -535,7 +553,7 @@ object Form2: TForm2
       'TWGart_Vor'
       'TWGart_Rueck'
     )
-    TabOrder = 16
+    TabOrder = 15
     Text = 'Bedingung3'
   end
   object XqBis: TMaskEdit
@@ -545,7 +563,7 @@ object Form2: TForm2
     Width = 50
     CharCase = ecNormal
     MaxLength = 5
-    TabOrder = 17
+    TabOrder = 16
     OnChange = Von1Change
     EditMask = '99:99;1;_'
     Text = '  :  '
@@ -556,7 +574,7 @@ object Form2: TForm2
     Height = 21
     Top = 488
     Width = 72
-    TabOrder = 18
+    TabOrder = 17
     Text = '8,5'
   end
   object Yquer: TEdit
@@ -564,7 +582,7 @@ object Form2: TForm2
     Height = 21
     Top = 488
     Width = 80
-    TabOrder = 19
+    TabOrder = 18
     Text = '04:23:00'
   end
   object Peilwert: TEdit
@@ -573,8 +591,25 @@ object Form2: TForm2
     Top = 480
     Width = 80
     OnChange = PeilwertChange
-    TabOrder = 21
+    TabOrder = 20
     Text = 'Peilwert'
     Visible = False
+  end
+  object XProgramm: TLabel
+    Left = 216
+    Height = 13
+    Top = 6
+    Width = 54
+    Caption = 'XProgramm'
+    ParentColor = False
+  end
+  object ZusZeit: TLabel
+    Left = 32
+    Height = 13
+    Top = 458
+    Width = 12
+    Caption = '...'
+    ParentColor = False
+    OnClick = ZusZeitClick
   end
 end

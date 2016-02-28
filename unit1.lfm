@@ -1,18 +1,18 @@
 object Form1: TForm1
   Left = 518
-  Height = 557
+  Height = 603
   Top = 198
   Width = 921
   Caption = 'Form1'
-  ClientHeight = 557
+  ClientHeight = 603
   ClientWidth = 921
   OnCreate = FormCreate
   OnShow = FormShow
   LCLVersion = '1.4.4.0'
   object Ende: TButton
-    Left = 392
+    Left = 231
     Height = 25
-    Top = 320
+    Top = 280
     Width = 75
     Caption = 'Ende'
     OnClick = EndeClick
@@ -27,13 +27,13 @@ object Form1: TForm1
     OnDblClick = Calendar1DblClick
     TabOrder = 1
   end
-  object Hello_World: TButton
-    Left = 392
+  object Info: TButton
+    Left = 330
     Height = 25
     Top = 280
     Width = 112
-    Caption = 'Hello_World'
-    OnClick = Hello_WorldClick
+    Caption = 'Info'
+    OnClick = InfoClick
     TabOrder = 2
   end
   object P_Laden: TButton
@@ -46,9 +46,9 @@ object Form1: TForm1
     TabOrder = 3
   end
   object HzMontag: TComboBox
-    Left = 236
+    Left = 228
     Height = 21
-    Top = 280
+    Top = 320
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
@@ -56,9 +56,9 @@ object Form1: TForm1
     Text = 'HzMontag'
   end
   object HzDienstag: TComboBox
-    Left = 236
+    Left = 228
     Height = 21
-    Top = 312
+    Top = 352
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
@@ -66,9 +66,9 @@ object Form1: TForm1
     Text = 'HzDienstag'
   end
   object HzMittwoch: TComboBox
-    Left = 236
+    Left = 228
     Height = 21
-    Top = 344
+    Top = 384
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
@@ -76,9 +76,9 @@ object Form1: TForm1
     Text = 'HzMittwoch'
   end
   object HzDonnerstag: TComboBox
-    Left = 236
+    Left = 228
     Height = 21
-    Top = 376
+    Top = 416
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
@@ -86,9 +86,9 @@ object Form1: TForm1
     Text = 'HzDonnerstag'
   end
   object HzFreitag: TComboBox
-    Left = 236
+    Left = 228
     Height = 21
-    Top = 408
+    Top = 448
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
@@ -96,9 +96,9 @@ object Form1: TForm1
     Text = 'HzFreitag'
   end
   object HzSamstag: TComboBox
-    Left = 236
+    Left = 228
     Height = 21
-    Top = 440
+    Top = 480
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
@@ -106,9 +106,9 @@ object Form1: TForm1
     Text = 'HzSamstag'
   end
   object HzSonntag: TComboBox
-    Left = 236
+    Left = 228
     Height = 21
-    Top = 472
+    Top = 512
     Width = 131
     ItemHeight = 13
     OnChange = HzMontagChange
@@ -116,57 +116,57 @@ object Form1: TForm1
     Text = 'HzSonntag'
   end
   object Montag: TLabel
-    Left = 152
+    Left = 144
     Height = 13
-    Top = 280
+    Top = 320
     Width = 36
     Caption = 'Montag'
     ParentColor = False
   end
   object Dienstag: TLabel
-    Left = 152
+    Left = 144
     Height = 13
-    Top = 312
+    Top = 352
     Width = 42
     Caption = 'Dienstag'
     ParentColor = False
   end
   object Mittwoch: TLabel
-    Left = 152
+    Left = 144
     Height = 13
-    Top = 344
+    Top = 384
     Width = 43
     Caption = 'Mittwoch'
     ParentColor = False
   end
   object Donnerstag: TLabel
-    Left = 152
+    Left = 144
     Height = 13
-    Top = 376
+    Top = 416
     Width = 56
     Caption = 'Donnerstag'
     ParentColor = False
   end
   object Freitag: TLabel
-    Left = 152
+    Left = 144
     Height = 13
-    Top = 408
+    Top = 448
     Width = 34
     Caption = 'Freitag'
     ParentColor = False
   end
   object Samstag: TLabel
-    Left = 152
+    Left = 144
     Height = 13
-    Top = 440
+    Top = 480
     Width = 41
     Caption = 'Samstag'
     ParentColor = False
   end
   object Sonntag: TLabel
-    Left = 152
+    Left = 144
     Height = 13
-    Top = 472
+    Top = 512
     Width = 40
     Caption = 'Sonntag'
     ParentColor = False
@@ -219,7 +219,7 @@ object Form1: TForm1
     Left = 330
     Height = 25
     Top = 240
-    Width = 139
+    Width = 112
     Caption = 'Tagesregel'
     OnClick = TagesregelClick
     TabOrder = 14
@@ -242,9 +242,9 @@ object Form1: TForm1
     TabOrder = 16
   end
   object Debug_Flag: TCheckBox
-    Left = 392
+    Left = 456
     Height = 17
-    Top = 360
+    Top = 240
     Width = 77
     Caption = 'Debug_Flag'
     OnChange = Debug_FlagChange
@@ -285,6 +285,15 @@ object Form1: TForm1
     )
     TabOrder = 20
     Visible = False
+  end
+  object DeAktiv: TButton
+    Left = 144
+    Height = 25
+    Top = 280
+    Width = 75
+    Caption = 'DeAktiv'
+    OnClick = DeAktivClick
+    TabOrder = 21
   end
   object Timer1: TTimer
     OnTimer = Timer1Timer

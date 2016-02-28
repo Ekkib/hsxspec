@@ -14,13 +14,17 @@ type
 
   TForm2 = class(TForm)
     aktiv: TCheckBox;
+    ZusZeit: TLabel;
+    ZusAggregat: TLabel;
+    ZusBedingung: TLabel;
+    XProgramm: TLabel;
+    scharf3: TCheckBox;
     q2: TCheckBox;
     q1: TCheckBox;
     q3: TCheckBox;
     scharf1: TCheckBox;
     scharf2: TCheckBox;
     Peilwert: TEdit;
-    scharf3: TCheckBox;
     Bedingung1: TComboBox;
     Aggregat1: TComboBox;
     Aggregat2: TComboBox;
@@ -82,6 +86,9 @@ type
     procedure Von1Change(Sender: TObject);
     procedure dec_tfi ;
     procedure berechne_gueltig ;
+    procedure ZusAggregatClick(Sender: TObject);
+    procedure ZusBedingungClick(Sender: TObject);
+    procedure ZusZeitClick(Sender: TObject);
   private
     { private declarations }
   public
@@ -244,6 +251,7 @@ procedure TForm2.LadenClick(Sender: TObject);
 begin  with unit1.Form1 do begin
   psec := Heizprogramme.Items [Heizprogramme.ItemIndex]
                                                + '_' + TForm (self).Caption ;
+  XProgramm.Caption := Heizprogramme.Items [Heizprogramme.ItemIndex] ;
 
   TForm (self).top   := IniFile.ReadInteger(psec, 'top',   TForm (self).top   );
   TForm (self).left  := IniFile.ReadInteger(psec, 'left',  TForm (self).left  );
@@ -344,6 +352,27 @@ begin
         and  (panel6.Color <> clRed )
     then panel5.Color:= clLime else panel5.Color:= clRed;
 
+end;
+
+procedure TForm2.ZusAggregatClick(Sender: TObject);
+begin
+  showmessage ('Im Endausbau wird durch diesen Klick' + #13 +
+               'ein weiteres Aggregat angelegt' + #13 + #13 +
+               '           Daumen drücken ! ') ;
+end;
+
+procedure TForm2.ZusBedingungClick(Sender: TObject);
+begin
+   showmessage ('Im Endausbau wird durch diesen Klick' + #13 +
+               'eine weitere Bedingung angelegt' + #13 + #13 +
+               '           Daumen drücken ! ') ;
+end;
+
+procedure TForm2.ZusZeitClick(Sender: TObject);
+begin
+    showmessage ('Im Endausbau wird durch diesen Klick' + #13 +
+               'eine weitere Zeiteingabe angelegt' + #13 + #13 +
+               '           Daumen drücken ! ') ;
 end;
 
 end.

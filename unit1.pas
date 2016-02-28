@@ -1,13 +1,5 @@
 unit Unit1;       // quick & dirty. Schön kommt irgendwann später, :-)
 
-{ to do :
-- Feste Werte in Schleifen gegen Konstante tauschen, evtl. zur Laufzeit bestimmen
-- Listen in die .ini Datei, alles in einer Sektion, unabhg. von var name
-- geplante Erweiterungen und bekannte Bugs in getrennter Datei, auch auf github
-- Filtern und Umsortieren von Messstellen und Aktoren
-- Knopf : Einstellungen
-}
-
 {$mode objfpc}{$H+}
 
 interface
@@ -16,17 +8,46 @@ uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
 
-const Version    = 'HSX 20160208' ;  lizenz_text =
+const Version    = 'HSX 20160228' ;
+
+const ToDo    =
+'                 To Do ' + #13 +  #13 +
+'- Zahlen in Schleifen gegen Variable/Konstante tauschen  ' + #13 +
+'- ... in den Regeln auskodieren                           ' + #13 +
+'- Programmierung der .ini Datei durchbürsten ' + #13 +
+'- zentraler Kesselschutz (Überhitzungsschutz)' + #13 +
+'  (kann jetzt - bei Bedarf - in jedem Regelbaustein implementiert werden)' + #13 +
+'- Brauchwasser Konzept (Warmwasser Vorrangschaltung und so)' + #13 +
+'- Loggen implementieren und LogLevel definieren'  + #13 +
+'- Debug-Screen aus HS1 rüberziehen'  + #13 +
+'- Plausibilität und (Relais-)Flatter Schutz'  + #13 +
+'- Heizprogramm editieren verbessern (intern, oder extra Programm) '  + #13 +
+'  (Editieren kann ja auch per Text-Edit der .ini Datei passieren) '  + #13 +
+'- Kalenderbaustein aufhübschen             '  + #13 +
+'- restliche Regel-Variablen sichern/laden   '  + #13 +
+'- Interface zu OWFS '  + #13 +
+'- Ausgaben an die reale Welt (Relais) '  + #13 +
+'- optional 24 Stunden Mittelwerte neben Rohwerte listen '  + #13 +
+'- (Sobald es Mitarbeiter gibt, diese Liste zur github >issues< Liste migrieren)'+ #13 +
+'-              '  + #13 +
+'-              '  + #13 +
+
+#13 +#13 +#13 +#13 + '                             ~ finis ~'    ;
+
+
+ const lizenz_text =
 
  'Heizungssteuerung HSX mit 1-Wire Temperatur-Sensoren'          + #13 + #13 +
  'Version : ' + version                                          + #13 + #13 +
  'Copyright (c) 2006-2016 : Ekkehard Pofahl, ekkehard@pofahl.de' + #13 + #13 +
 
+ '        https://sites.google.com/site/raspihs1/'   + #13 + #13 +
+
 'Lizenz: CC BY-NC 3.0             Web Adresse der Lizenz :'        +#13+
 ' '                                                                +#13+
 '    https://creativecommons.org/licenses/by-nc/3.0/de/'           +#13+
 ' '                                                                       +#13+
-'Sie duerfen das Werk bzw. den Inhalt vervielfältigen, verbreiten und'    +#13+
+'Sie duerfen das Werk bzw. den Inhalt vervielfaeltigen, verbreiten und'    +#13+
 'oeffentlich zugaenglich machen, Abwandlungen und Bearbeitungen des'      +#13+
 'Werkes bzw. Inhaltes anfertigen zu den folgenden Bedingungen:'           +#13+
 ' '                                                                       +#13+
@@ -38,7 +59,7 @@ const Version    = 'HSX 20160208' ;  lizenz_text =
 '              kann aufgehoben werden, sofern Sie die ausdrueckliche'     +#13+
 '              Einwilligung des Rechteinhabers dazu erhalten.'            +#13+
 ' '                                                                       +#13+
-'Die Veröffentlichung dieser Software erfolgt in der Hoffnung, dass sie'   +#13+
+'Die Veroeffentlichung dieser Software erfolgt in der Hoffnung, dass sie'   +#13+
 'Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die'+#13+
 'implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FUER EINEN'     +#13+
 'BESTIMMTEN ZWECK. Die Nutzung dieser Software erfolgt auf eigenes Risiko!' ;
@@ -54,6 +75,7 @@ type
 
   TForm1 = class(TForm)
     Alles_Speichern: TButton;
+    DeAktiv: TButton;
     cre_Tempboxes: TButton;
     Debug_Flag: TCheckBox;
     DatumZeit: TEdit;
@@ -63,7 +85,7 @@ type
     Erstelle_Regeln: TButton;
     Einstellungen: TButton;
     Ende: TButton;
-    Hello_World: TButton;
+    Info: TButton;
     P_Laden: TButton;
     Calendar1: TCalendar;
     HzMontag: TComboBox;
@@ -84,6 +106,7 @@ type
     Timer1: TTimer;
     procedure Alles_SpeichernClick(Sender: TObject);
     procedure cre_TempboxesClick(Sender: TObject);
+    procedure DeAktivClick(Sender: TObject);
     procedure HzMontagChange(Sender: TObject);
     procedure Debug_FlagChange(Sender: TObject);
     procedure Erstelle_RegelnClick(Sender: TObject);
@@ -92,7 +115,7 @@ type
     procedure EndeClick(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormShow(Sender: TObject);
-    procedure Hello_WorldClick(Sender: TObject);
+    procedure InfoClick(Sender: TObject);
     procedure P_LadenClick(Sender: TObject);
     procedure TagesregelClick(Sender: TObject);
     procedure Timer1Timer(Sender: TObject);
@@ -215,12 +238,11 @@ begin
 
   iniFile.WriteString('Mehr_Info','Sektion_info', 'bislang keine Read_section');
 
-  with form1.IniFile do begin
-     top    := Cre_Ini_Int ('Zentrale', 'top',    top    ) ;
-     left   := Cre_Ini_Int ('Zentrale', 'left',   left   ) ;
-     width  := Cre_Ini_Int ('Zentrale', 'width',  width  ) ;
-     height := Cre_Ini_Int ('Zentrale', 'height', height ) ;
-  end;
+  // Formulargrenzen
+  top    := Cre_Ini_Int ('Zentrale', 'top',    top    ) ;
+  left   := Cre_Ini_Int ('Zentrale', 'left',   left   ) ;
+  width  := Cre_Ini_Int ('Zentrale', 'width',  width  ) ;
+  height := Cre_Ini_Int ('Zentrale', 'height', height ) ;
 
   // Demnächst auch variabel ! :-)
   // Name_Regler
@@ -483,6 +505,14 @@ begin
   end ;
 end;
 
+procedure TForm1.DeAktivClick(Sender: TObject);
+begin        // hier muß natürlich noch die Schleife hin !
+    regel_i [1] .aktiv.Checked:= false ;
+    regel_i [2] .aktiv.Checked:= false ;
+    regel_i [3] .aktiv.Checked:= false ;
+    regel_i [4] .aktiv.Checked:= false ;
+end;
+
 Function TForm1.Hz_Tab_Wert (lookup : string) : Integer ;
 var nakt, ii, hzindex : Integer ;
     x1, x2, y1, y2, z : Real ;
@@ -582,10 +612,11 @@ begin
       Form4.ShowModal;
 end;
 
-procedure TForm1.Hello_WorldClick(Sender: TObject);
+procedure TForm1.InfoClick(Sender: TObject);
 begin
         showmessage ('hello world' + #13 + #13 + '~ HSX Prototyp ~'
         + #13 + #13 + 'auf vier Regelbausteine eingeschränkt') ;
+        showmessage (ToDo)   ;
         showmessage (lizenz_text)   ;
 end;
 
@@ -622,7 +653,11 @@ begin
 
   if HMSToInt ( TimeToStr (now) ) < old_secs then  // Neuer Tag !
      begin
-           Tagesregel.Click;
+       Tagesregel.Click;
+       // Reset akkumulierte Zeit für Aktorentimer :
+       for tt_j := 1 to MaxAktor do
+         TLabeledEdit(FindComponent('A'+IntToStr(tt_j))).EditLabel.Caption :=
+                                                      IntToHMS (0) ;
      end;
   old_secs :=  HMSToInt ( TimeToStr (now) ) ;
 
@@ -674,45 +709,5 @@ begin
 end;
 
 end.
-
-
- { MIT
- Copyright (c) <year> <copyright holders>
- Permission is hereby granted, free of charge, to any person
- obtaining a copy of this software and associated documentation files
- (the "Software"), to deal in the Software without restriction,
- including without limitation the rights to use, copy, modify, merge,
- publish, distribute, sublicense, and/or sell copies of the Software,
- and to permit persons to whom the Software is furnished to do so,
- subject to the following conditions:
-
- The above copyright notice and this permission notice shall be
- included in all copies or substantial portions of the Software.
-
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
- OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
- HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
- WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
- FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
- OR OTHER DEALINGS IN THE SOFTWARE.
-  }
-
- {
-
- 'This program is free software: you can redistribute it and/or modify' + #13 +
- 'it under the terms of the GNU General Public License as published by' + #13 +
- 'the Free Software Foundation, either version 3 of the License, or'    + #13 +
- '(at your option) any later version. '                                 + #13 +
-
- 'This program is distributed in the hope that it will be useful,'      + #13 +
- 'but WITHOUT ANY WARRANTY; without even the implied warranty of '      + #13 +
- 'MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the '       + #13 +
- 'GNU General Public License for more details. '                        + #13 +
-
- 'You should have received a copy of the GNU General Public License '   + #13 +
- 'along with this program.  If not, see <http://www.gnu.org/licenses/>' + #13 ;
-}
 
 
