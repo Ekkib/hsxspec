@@ -8,12 +8,13 @@ uses
   Classes, SysUtils, FileUtil, RTTICtrls, Forms, Controls, Graphics, Dialogs,
   StdCtrls, ExtCtrls, Calendar, regel_nn, cal_wahl, INIFiles, Unit2;
 
-const Version    = 'HSX 20160228' ;
+const Version    = 'HSX 20160501' ;
 
-const ToDo    =
+const ToDo    =   'Version  : ' + Version  + #13 +  #13 +
 '                 To Do ' + #13 +  #13 +
 '- Zahlen in Schleifen gegen Variable/Konstante tauschen  ' + #13 +
-'- ... in den Regeln auskodieren                           ' + #13 +
+'- Prios in Regel, Tabelle vor Zeitslot !  ' + #13 +
+'- ... und "X" in den Regeln auskodieren                           ' + #13 +
 '- Programmierung der .ini Datei durchbürsten ' + #13 +
 '- zentraler Kesselschutz (Überhitzungsschutz)' + #13 +
 '  (kann jetzt - bei Bedarf - in jedem Regelbaustein implementiert werden)' + #13 +
@@ -29,8 +30,11 @@ const ToDo    =
 '- Ausgaben an die reale Welt (Relais) '  + #13 +
 '- optional 24 Stunden Mittelwerte neben Rohwerte listen '  + #13 +
 '- (Sobald es Mitarbeiter gibt, diese Liste zur github >issues< Liste migrieren)'+ #13 +
-'-              '  + #13 +
-'-              '  + #13 +
+'- Mischer fahren  '  + #13 +
+'- Feiertage (1.1., 3.10., 24.12., ...), evtl. sogar Jahresgenau (Ostern etc.)  '  + #13 +
+'- 1Wire Scan am Anfang, bekannte Adressen einsortieren,  '  + #13 +
+'   unbekannte anzeigen und in .INI Datei auflisten'  + #13 +
+'- Zeit-Maximum auswählen, wenn Zähler schon läuft ?'  + #13 +
 
 #13 +#13 +#13 +#13 + '                             ~ finis ~'    ;
 
@@ -616,6 +620,10 @@ procedure TForm1.InfoClick(Sender: TObject);
 begin
         showmessage ('hello world' + #13 + #13 + '~ HSX Prototyp ~'
         + #13 + #13 + 'auf vier Regelbausteine eingeschränkt') ;
+        showmessage  ('   Infos'  + #13 + #13 +
+'Fenstergrößen und Positionen können beliebig verändert werden.'  + #13 +
+'Diese Änderungen können durch die >Speichern< permanent gemacht werden.'+ #13+
+' >Laden< lädt die letzmalig gespeicherte Einstellung.' );
         showmessage (ToDo)   ;
         showmessage (lizenz_text)   ;
 end;

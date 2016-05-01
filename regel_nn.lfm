@@ -7,7 +7,7 @@ object Form2: TForm2
   ClientHeight = 669
   ClientWidth = 843
   OnCreate = FormCreate
-  LCLVersion = '1.4.4.0'
+  LCLVersion = '1.6.0.4'
   object Panel8: TPanel
     Left = 21
     Height = 106
@@ -29,7 +29,7 @@ object Form2: TForm2
       OnClick = Panel9Click
       object Trig_time: TEdit
         Left = 16
-        Height = 21
+        Height = 23
         Top = 8
         Width = 136
         TabOrder = 0
@@ -37,7 +37,7 @@ object Form2: TForm2
       end
       object Trig_temp: TEdit
         Left = 192
-        Height = 21
+        Height = 23
         Top = 8
         Width = 71
         TabOrder = 1
@@ -45,7 +45,7 @@ object Form2: TForm2
       end
       object Trig_volume: TEdit
         Left = 272
-        Height = 21
+        Height = 23
         Top = 8
         Width = 80
         TabOrder = 2
@@ -54,24 +54,24 @@ object Form2: TForm2
     end
     object q3: TCheckBox
       Left = 192
-      Height = 17
+      Height = 19
       Top = 16
-      Width = 26
+      Width = 27
       Caption = 'q'
       TabOrder = 1
     end
     object scharf3: TCheckBox
       Left = 8
-      Height = 17
+      Height = 19
       Top = 20
-      Width = 50
+      Width = 52
       Caption = 'scharf'
       OnChange = scharf3Change
       TabOrder = 2
     end
   end
   object Panel5: TPanel
-    Left = 21
+    Left = 24
     Height = 312
     Top = 32
     Width = 584
@@ -79,11 +79,11 @@ object Form2: TForm2
     ClientWidth = 584
     TabOrder = 13
     object Aggregat1: TComboBox
-      Left = 16
-      Height = 21
+      Left = 114
+      Height = 23
       Top = 16
       Width = 160
-      ItemHeight = 13
+      ItemHeight = 15
       Items.Strings = (
         ''
         'Brenner'
@@ -95,11 +95,11 @@ object Form2: TForm2
       Text = 'Aggregat1'
     end
     object Aggregat2: TComboBox
-      Left = 16
-      Height = 21
+      Left = 114
+      Height = 23
       Top = 48
       Width = 160
-      ItemHeight = 13
+      ItemHeight = 15
       Items.Strings = (
         ''
         'Brenner'
@@ -114,17 +114,17 @@ object Form2: TForm2
       Left = 16
       Height = 96
       Top = 192
-      Width = 544
+      Width = 539
       BorderWidth = 3
       ClientHeight = 96
-      ClientWidth = 544
+      ClientWidth = 539
       ParentColor = False
       TabOrder = 2
       object scharf2: TCheckBox
         Left = 8
-        Height = 17
+        Height = 19
         Top = 40
-        Width = 50
+        Width = 52
         Caption = 'scharf'
         OnChange = scharf2Change
         TabOrder = 0
@@ -140,10 +140,10 @@ object Form2: TForm2
         OnClick = Panel7Click
         object Bedingung2: TComboBox
           Left = 16
-          Height = 21
+          Height = 23
           Top = 24
           Width = 100
-          ItemHeight = 13
+          ItemHeight = 15
           Items.Strings = (
             'TWarmwasser'
             'TKessel'
@@ -174,7 +174,7 @@ object Form2: TForm2
           ChildSizing.ShrinkVertical = crsScaleChilds
           ChildSizing.Layout = cclLeftToRightThenTopToBottom
           ChildSizing.ControlsPerLine = 1
-          ClientHeight = 36
+          ClientHeight = 34
           ClientWidth = 53
           ItemIndex = 0
           Items.Strings = (
@@ -185,7 +185,7 @@ object Form2: TForm2
         end
         object Edit7: TEdit
           Left = 272
-          Height = 21
+          Height = 23
           Top = 24
           Width = 64
           TabOrder = 2
@@ -193,7 +193,7 @@ object Form2: TForm2
         end
         object Edit8: TEdit
           Left = 384
-          Height = 21
+          Height = 23
           Top = 24
           Width = 72
           TabOrder = 3
@@ -201,15 +201,15 @@ object Form2: TForm2
         end
         object Label3: TLabel
           Left = 336
-          Height = 13
+          Height = 15
           Top = 24
-          Width = 49
+          Width = 51
           Caption = 'Hysterese'
           ParentColor = False
         end
         object Edit9: TEdit
           Left = 160
-          Height = 21
+          Height = 23
           Top = 24
           Width = 56
           TabOrder = 4
@@ -217,9 +217,9 @@ object Form2: TForm2
         end
         object q2: TCheckBox
           Left = 120
-          Height = 17
+          Height = 19
           Top = 24
-          Width = 26
+          Width = 27
           Caption = 'q'
           TabOrder = 5
         end
@@ -227,19 +227,19 @@ object Form2: TForm2
     end
     object ZusBedingung: TLabel
       Left = 16
-      Height = 13
+      Height = 15
       Top = 288
-      Width = 12
-      Caption = '...'
+      Width = 34
+      Caption = '...      X'
       ParentColor = False
       OnClick = ZusBedingungClick
     end
     object ZusAggregat: TLabel
-      Left = 16
-      Height = 13
+      Left = 114
+      Height = 15
       Top = 72
-      Width = 12
-      Caption = '...'
+      Width = 28
+      Caption = '...    X'
       ParentColor = False
       OnClick = ZusAggregatClick
     end
@@ -255,7 +255,7 @@ object Form2: TForm2
   end
   object Von1: TMaskEdit
     Left = 65
-    Height = 21
+    Height = 23
     Top = 368
     Width = 50
     CharCase = ecNormal
@@ -268,7 +268,7 @@ object Form2: TForm2
   end
   object Von2: TMaskEdit
     Left = 65
-    Height = 21
+    Height = 23
     Top = 404
     Width = 50
     CharCase = ecNormal
@@ -281,7 +281,7 @@ object Form2: TForm2
   end
   object Von3: TMaskEdit
     Left = 65
-    Height = 21
+    Height = 23
     Top = 440
     Width = 50
     CharCase = ecNormal
@@ -294,7 +294,7 @@ object Form2: TForm2
   end
   object Bis1: TMaskEdit
     Left = 144
-    Height = 21
+    Height = 23
     Top = 368
     Width = 50
     CharCase = ecNormal
@@ -307,7 +307,7 @@ object Form2: TForm2
   end
   object Bis2: TMaskEdit
     Left = 144
-    Height = 21
+    Height = 23
     Top = 404
     Width = 50
     CharCase = ecNormal
@@ -320,7 +320,7 @@ object Form2: TForm2
   end
   object Bis3: TMaskEdit
     Left = 144
-    Height = 21
+    Height = 23
     Top = 440
     Width = 50
     CharCase = ecNormal
@@ -333,7 +333,7 @@ object Form2: TForm2
   end
   object slot1: TCheckBox
     Left = 32
-    Height = 17
+    Height = 19
     Top = 376
     Width = 23
     Caption = ' '
@@ -341,7 +341,7 @@ object Form2: TForm2
   end
   object slot2: TCheckBox
     Left = 32
-    Height = 17
+    Height = 19
     Top = 408
     Width = 23
     Caption = ' '
@@ -349,7 +349,7 @@ object Form2: TForm2
   end
   object slot3: TCheckBox
     Left = 32
-    Height = 17
+    Height = 19
     Top = 440
     Width = 23
     Caption = ' '
@@ -365,18 +365,18 @@ object Form2: TForm2
     TabOrder = 10
   end
   object Panel1: TPanel
-    Left = 440
+    Left = 40
     Height = 56
     Top = 48
-    Width = 136
+    Width = 59
     ClientHeight = 56
-    ClientWidth = 136
+    ClientWidth = 59
     TabOrder = 11
     object aktiv: TCheckBox
-      Left = 48
-      Height = 17
-      Top = 16
-      Width = 43
+      Left = 8
+      Height = 19
+      Top = 18
+      Width = 45
       Caption = 'aktiv'
       OnChange = aktivChange
       TabOrder = 0
@@ -394,9 +394,9 @@ object Form2: TForm2
     TabOrder = 12
     object scharf1: TCheckBox
       Left = 8
-      Height = 17
+      Height = 19
       Top = 40
-      Width = 50
+      Width = 52
       Caption = 'scharf'
       OnChange = scharf1Change
       TabOrder = 0
@@ -412,10 +412,10 @@ object Form2: TForm2
       OnClick = Panel4Click
       object Bedingung1: TComboBox
         Left = 8
-        Height = 21
+        Height = 23
         Top = 24
         Width = 100
-        ItemHeight = 13
+        ItemHeight = 15
         Items.Strings = (
           'TWarmwasser'
           'TKessel'
@@ -446,7 +446,7 @@ object Form2: TForm2
         ChildSizing.ShrinkVertical = crsScaleChilds
         ChildSizing.Layout = cclLeftToRightThenTopToBottom
         ChildSizing.ControlsPerLine = 1
-        ClientHeight = 36
+        ClientHeight = 34
         ClientWidth = 53
         ItemIndex = 0
         Items.Strings = (
@@ -457,7 +457,7 @@ object Form2: TForm2
       end
       object Edit4: TEdit
         Left = 264
-        Height = 21
+        Height = 23
         Top = 24
         Width = 64
         TabOrder = 2
@@ -465,7 +465,7 @@ object Form2: TForm2
       end
       object Edit5: TEdit
         Left = 384
-        Height = 21
+        Height = 23
         Top = 24
         Width = 72
         TabOrder = 3
@@ -473,15 +473,15 @@ object Form2: TForm2
       end
       object Label2: TLabel
         Left = 336
-        Height = 13
+        Height = 15
         Top = 24
-        Width = 49
+        Width = 51
         Caption = 'Hysterese'
         ParentColor = False
       end
       object Edit6: TEdit
         Left = 152
-        Height = 21
+        Height = 23
         Top = 24
         Width = 56
         TabOrder = 4
@@ -489,16 +489,16 @@ object Form2: TForm2
       end
       object q1: TCheckBox
         Left = 112
-        Height = 17
+        Height = 19
         Top = 28
-        Width = 26
+        Width = 27
         Caption = 'q'
         TabOrder = 5
       end
     end
   end
   object Panel2: TPanel
-    Left = 216
+    Left = 375
     Height = 56
     Top = 48
     Width = 204
@@ -526,19 +526,19 @@ object Form2: TForm2
     end
     object DispT: TLabel
       Left = 74
-      Height = 13
+      Height = 15
       Top = 22
-      Width = 26
+      Width = 30
       Caption = 'DispT'
       ParentColor = False
     end
   end
   object Bedingung3: TComboBox
     Left = 88
-    Height = 21
+    Height = 23
     Top = 488
     Width = 116
-    ItemHeight = 13
+    ItemHeight = 15
     Items.Strings = (
       'TWarmwasser'
       'TKessel'
@@ -558,7 +558,7 @@ object Form2: TForm2
   end
   object XqBis: TMaskEdit
     Left = 424
-    Height = 21
+    Height = 23
     Top = 488
     Width = 50
     CharCase = ecNormal
@@ -571,7 +571,7 @@ object Form2: TForm2
   end
   object Xquer: TEdit
     Left = 248
-    Height = 21
+    Height = 23
     Top = 488
     Width = 72
     TabOrder = 17
@@ -579,7 +579,7 @@ object Form2: TForm2
   end
   object Yquer: TEdit
     Left = 328
-    Height = 21
+    Height = 23
     Top = 488
     Width = 80
     TabOrder = 18
@@ -587,7 +587,7 @@ object Form2: TForm2
   end
   object Peilwert: TEdit
     Left = 520
-    Height = 21
+    Height = 23
     Top = 480
     Width = 80
     OnChange = PeilwertChange
@@ -597,18 +597,18 @@ object Form2: TForm2
   end
   object XProgramm: TLabel
     Left = 216
-    Height = 13
+    Height = 15
     Top = 6
-    Width = 54
+    Width = 64
     Caption = 'XProgramm'
     ParentColor = False
   end
   object ZusZeit: TLabel
     Left = 32
-    Height = 13
+    Height = 15
     Top = 458
-    Width = 12
-    Caption = '...'
+    Width = 28
+    Caption = '...    X'
     ParentColor = False
     OnClick = ZusZeitClick
   end

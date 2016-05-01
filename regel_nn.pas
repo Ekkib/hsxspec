@@ -357,22 +357,25 @@ end;
 procedure TForm2.ZusAggregatClick(Sender: TObject);
 begin
   showmessage ('Im Endausbau wird durch diesen Klick' + #13 +
-               'ein weiteres Aggregat angelegt' + #13 + #13 +
+               'ein weiteres Aggregat angelegt (...)' + #13 +
+               'oder die davorliegende Zeile gelöscht ( X )' + #13 + #13 +
                '           Daumen drücken ! ') ;
 end;
 
 procedure TForm2.ZusBedingungClick(Sender: TObject);
 begin
    showmessage ('Im Endausbau wird durch diesen Klick' + #13 +
-               'eine weitere Bedingung angelegt' + #13 + #13 +
+               'eine weitere Bedingung angelegt (...)' + #13 +
+               'oder die davorliegende Zeile gelöscht ( X )' + #13 + #13 +
                '           Daumen drücken ! ') ;
 end;
 
 procedure TForm2.ZusZeitClick(Sender: TObject);
 begin
-    showmessage ('Im Endausbau wird durch diesen Klick' + #13 +
-               'eine weitere Zeiteingabe angelegt' + #13 + #13 +
-               '           Daumen drücken ! ') ;
+    showmessage ('Im Endausbau wird durch diesen Klick'    + #13 +
+                 'eine weitere Zeiteingabe angelegt (...)' + #13 +
+                 'oder die davorliegende Zeile gelöscht ( X )' + #13 + #13 +
+                 '           Daumen drücken ! ') ;
 end;
 
 end.
