@@ -1,0 +1,39 @@
+{
+    "enabled": true,
+    "firstId": 74300,
+    "settings": {
+        "owserverTimeout": 3000,
+        "owserverInterval": 30000,
+        "errorLevelRead": "debug",   /* global: silly, debug, verbose, info, warn, error (defaults to "debug") */
+        "errorLevelWrite": "debug",  /* no output if less than logger.level (defaults to 3 == "info") */
+        "errorLevelNumber": "debug", /* may all be overridden on IP level */
+        "IPs": {
+            "_1": {
+                "ip": "127.0.0.1",
+                "port": "4304",
+                "alias": "Local",
+                "interval": 30000,
+                "errorLevelNumber": "warn",
+                "wire": {
+                    "_1": {
+                        "alias": "Dachboden",
+                        "id": "10.91F6DB020800",
+                        "maxChange": 0.01,   /* implies number=true */
+                        "property": "temperature"
+                    },
+                    "_2": {
+                        "alias": "FB_Rücklauf",
+                        "id": "28.A8C784050000",
+                        "number": true,
+                        "property": "temperature"
+                    },
+                    "_3": {
+                        "alias": "Textbeispiel",
+                        "id": "28.A8C784050000",
+                        "property": "type"
+                    }
+                }
+            }
+        }
+    }
+}

@@ -2,7 +2,7 @@
  *   CCU.IO OWFS Adapter - owfs.js
  *
  *   Initial Version : 05. Mar 2014
- *   Current Version : 0.3.5 [06.01.2016]
+ *   Current Version : 0.3.6 [07.06.2016]
  *   
  *   Change Notes:
  *   - Initial Version 0.2.1 
@@ -12,6 +12,7 @@
  *   - Version 0.3.3 (Giermann) Fix write support, avoid write after each read
  *   - Version 0.3.4 (Giermann) Continuous reading (interval<0) and new configs: unit, dir [r|w|rw] (direction: read/write only)
  *   - Version 0.3.5 (Giermann) Simultaneous reading for temperature
+ *   - Version 0.3.6 (Giermann) added log level config and number types
  *
  *   Authors: 
  *   Ralf Muenk [muenk@getcom.de]
@@ -66,7 +67,8 @@ function writeWire(ipID, wireID, value) {
             value,
             function(err,result) {
                 if (err) {
-                    adapter.log("debug", "error writing '" + this.p + "': " + err.msg);
+                    adapter.log(adapter.settings.IPs["_" + ipID].errorLevelWrite || adapter.settings.errorLevelWrite,
+                        "error writing '" + this.p + "': " + err.msg);
                 }
             }.bind( {p: path} )
         );
@@ -79,21 +81,36 @@ function readWire(ipID, wireID, loop) {
         if (adapter.settings.IPs["_" + ipID].wire["_" + wireID].dir != "w") adapter.settings.IPs["_" + ipID].con.read(path,
             function(err,result) {
                 if (err) {
-                    adapter.log("debug", "error reading '" + this.p + "': " + err.msg);
+                    adapter.log(adapter.settings.IPs["_" + this.ip].errorLevelRead || adapter.settings.errorLevelRead,
+                        "error reading '" + this.p + "': " + err.msg);
                 } else if (result) {
-                    if (parseFloat(result) == 85) {
-                        // TODO: do we have to check if number values are expected?
-                        // async check for possible error and return without setting DP
-                        adapter.getState(adapter.settings.IPs["_" + this.ip].channelId + this.wire, function (id, val) {
-                            if (!val || (Math.abs(val - parseFloat(this.newVal)) < 3)) {
-                                if (val != this.newVal) adapter.setState(id, this.newVal, true);
-                            } else {
-                                adapter.log("debug", "skip invalid value for id " + id + ": " + this.newVal);
-                            }
-                        }.bind( {newVal: result} ));
-                    } else if (!isNaN(parseFloat(result))) {
+                    if (adapter.settings.IPs["_" + this.ip].wire["_" + this.wire].number || adapter.settings.IPs["_" + this.ip].wire["_" + this.wire].maxChange) {
+                        if (isNaN(parseFloat(result))) {
+                            adapter.log(adapter.settings.IPs["_" + this.ip].errorLevelNumber || adapter.settings.errorLevelNumber,
+                                "skip invalid value for id " + id + ": " + result);
+                        } else if (adapter.settings.IPs["_" + this.ip].wire["_" + this.wire].maxChange) {
+                            // async check for delta and return without setting DP
+                            adapter.getState(adapter.settings.IPs["_" + this.ip].channelId + this.wire, function (id, val) {
+                                if (val < (this.newVal - this.maxChange)) {
+                                    adapter.log(this.logLevel, "trimmed value for id " + id + ": " + this.newVal + " to maxChange");
+                                    adapter.setState(id, val + this.maxChange, true);
+                                } else if (val > (this.newVal + this.maxChange)) {
+                                    adapter.log(this.logLevel, "trimmed value for id " + id + ": " + this.newVal + " to maxChange");
+                                    adapter.setState(id, val - this.maxChange, true);
+                                } else if (val != this.newVal) {
+                                    adapter.setState(id, this.newVal, true);
+                                }
+                            }.bind( {
+                                newVal: parseFloat(result),
+                                maxChange: parseFloat(adapter.settings.IPs["_" + this.ip].wire["_" + this.wire].maxChange),
+                                logLevel: (adapter.settings.IPs["_" + this.ip].errorLevelNumber || adapter.settings.errorLevelNumber)
+                            } ));
+                        } else {
+                            adapter.setState(adapter.settings.IPs["_" + this.ip].channelId + this.wire, parseFloat(result), true);
+                        }
+                    } else {
                         if (this.doLoop) {
-                            // only set changes in loop mode
+                            // loop mode: do not call setState on unchanged values
                             adapter.getState(adapter.settings.IPs["_" + this.ip].channelId + this.wire, function (id, val) {
                                 if (val != this.newVal) adapter.setState(id, this.newVal, true);
                             }.bind( {newVal: result} ));
@@ -118,7 +135,8 @@ function owfsServerGetValues(ipID, loop) {
             1,
             function(err,result) {
                 if (err) {
-                    adapter.log("debug", "error requesting simultaneous reading: " + err.msg);
+                    adapter.log(adapter.settings.IPs["_" + ipID].errorLevelRead || adapter.settings.errorLevelRead,
+                        "error requesting simultaneous reading: " + err.msg);
                 }
             }
         );
@@ -167,8 +185,8 @@ function createPointsForServer(ipID) {
         {HssType:     "1WIRE-SENSORS"}
     );
 
-    if (adapter.settings.IPs["_" + ipID].interval < 0) {
-    	// conituous polling
+    if ((adapter.settings.IPs["_" + ipID].interval || adapter.settings.owserverInterval) < 0) {
+    	// continuous polling
     	owfsServerGetValues(ipID, true);
     } else {
         // Request first time
@@ -191,3 +209,4 @@ function initOWFS (){
 }
 
 initOWFS();
+
