@@ -5,7 +5,7 @@
 			
 In diesem Verzeichnis sollten sich die folgenden Dateien befinden :
 
-16.06.2016  17:14             4.xxx readme_1st.txt  (diese Datei)
+26.06.2016  xx:xx             4.xxx readme_1st.txt  (diese Datei)
 11.05.2016  21:08               676 adapter-owfs.json
 12.05.2016  22:29             1.121 adapter-owfs_pretty.json
 11.05.2016  20:56             8.705 dashui-views.json
@@ -15,7 +15,10 @@ In diesem Verzeichnis sollten sich die folgenden Dateien befinden :
 10.05.2016  18:23             7.445 Wanfo.prg
 09.05.2016  22:52            11.515 heizen.prg
 12.06.2016  16:04             2.xxx Konfig.txt 
-16.06.2016  17:05             3.xxx e2.htm
+                              3.xxx e2.htm             
+							  3.xxx e3.htm
+							  3.xxx e4.htm
+                              3.xxx e5.htm
 
 Dies sind alle Dateien, die man braucht, um HSX SG 0.2 ans Laufen zu bekommen.
 
@@ -63,7 +66,9 @@ Die Maske e2.htm in das Verzeichnis /opt/ccu.io/www/slimui kopieren.
 
 Aufruf mit : http://hsx01:8080/slimui/e2.htm
 
-SlimUI Masken sind sehr schlank. Der Aufruf klappt mobil auch mit der Verbindung "E" (Weniger als "3G") ohne Probleme.	
+SlimUI Masken sind sehr schlank. Der Aufruf klappt mobil auch mit der 
+Verbindung "E" (Weniger als "3G") ohne Probleme.
+Spielmaterial : ex.htm	.
 	
 
 Aktuelle owfs Adapter Einstellungen
@@ -72,7 +77,7 @@ Aktuelle owfs Adapter Einstellungen
 Den Adapter-Setup "adapter-owfs.json" in das Verzeichnis /opt/ccu.io/datastore/ 
 kopieren und dann mit einem JSON Editor (z.B. die Chrome Erweiterung JSON) oder 
 unter CCU.IO unter dem Tab "Adapter" editieren. Die Adressen der 1-Wire Adapter 
-müssen dort eingetragen werden. Man erhaelt die Adressen z.B. durch einen Aufruf :
+muessen dort eingetragen werden. Man erhaelt die Adressen z.B. durch einen Aufruf :
 
    http://hsx01:2121 
 
@@ -80,7 +85,7 @@ Achtung : Der .json Editor in CCU.IO ist strikt und mag keine zusaetzlichen
 Leerzeichen und so etwas.
 
 Die Adapter Einstellung muß gemäß "Konfig.txt" angepasst werden ! 
-Achtung, JSON mag keine Kommentare. Die müssen also rausfliegen.
+Achtung, JSON mag keine Kommentare. Die muessen also rausfliegen.
    
    
 Aktueller owfs Adapter
@@ -102,7 +107,7 @@ Viel Glueck !
 
 mailto:Ekkehard@Pofahl.de 
 
-(Rückmeldungen und Korrekturen sehr willkommen !)
+(Rueckmeldungen und Korrekturen sehr willkommen !)
 
 
 Editiert am :
@@ -113,4 +118,6 @@ Editiert am :
 
 18:52 13.06.2016
 
-17:11 16.06.2016
+10:11 26.06.2016
+
+14:27 26.06.2016
