@@ -33,5 +33,10 @@ lib/
 # Application bundle for Mac OS
 *.app/
 
+# Zwischenstaende
+
+hsx_sg_03/
+hsx_sg_04/
+
 
 ######### Hier mal zunaechst Ende ########
