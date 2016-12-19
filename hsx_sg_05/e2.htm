@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HSX Heizungssteuerung</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+</head>
+
+<body>
+             
+<h3 align="center"><br>HSX 01 Heizungssteuerung</br></h3>
+
+<table border="0">
+  <tr><td><span data-dp="74302" data-digits="1"></span></td><td>Warmwasser   </td><td><span data-dp="74302" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74303" data-digits="1"></span></td><td>Kessel       </td><td><span data-dp="74303" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74304" data-digits="1"></span></td><td>Wohnzimmer   </td><td><span data-dp="74304" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74305" data-digits="1"></span></td><td>Aussen       </td><td><span data-dp="74305" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74306" data-digits="1"></span></td><td>Wohnz_vor    </td><td><span data-dp="74306" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74307" data-digits="1"></span></td><td>Wohnz_rueck  </td><td><span data-dp="74307" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74308" data-digits="1"></span></td><td>Radiat_vor   </td><td><span data-dp="74308" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74309" data-digits="1"></span></td><td>Radiat_rueck </td><td><span data-dp="74309" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74310" data-digits="1"></span></td><td>Wgart_vor    </td><td><span data-dp="74310" data-timestamp="true"></span></td></tr>
+  <tr><td><span data-dp="74311" data-digits="1"></span></td><td>Wgart_rueck  </td><td><span data-dp="74311" data-timestamp="true"></span></td></tr>  
+</table>
+
+<table border="0">
+  <tr>    
+    <td><b>An</b></td> <td><b>Dec</b></td><td><b>Inc</b></td>
+    <td><b>Rest<br>Min</b></td> <td><b> &nbsp;&nbsp;&nbsp;Aggregat </td><td><b>&nbsp;&nbsp;&nbsp; Status </td>    
+  </tr>
+  <tr> 
+     <td><input id="xHKan"  type="checkbox" data-dp=HKan  name="checkbox84"></td>
+     <td><input id="xHKdec" type="checkbox" data-dp=HKdec name="checkbox83"></td>   
+     <td><input id="xHKinc" type="checkbox" data-dp=HKinc name="checkbox82"></td>   
+     <td>                             <span data-dp=HKzaehler data-digits="0"></span> </td> 
+     <td><input type="button"               data-dp="72549" data-toggle="true" value="Heizkoerper" name="button1"/></td> 
+     <td><input id="test_4" type="checkbox" data-dp="72549" name="checkbox81">
+                                      <span data-dp="72549" data-timestamp="true"></span> </td>
+  </tr>
+  <tr>   
+     <td><input id="xWGan"  type="checkbox" data-dp=WGan  name="checkbox8"></td>
+     <td><input id="xWGdec" type="checkbox" data-dp=WGdec name="checkbox7"></td>
+     <td><input id="xWGinc" type="checkbox" data-dp=WGinc name="checkbox6"></td>  
+     <td>                             <span data-dp=WGzaehler data-digits="0"></span></td>
+     <td><input type="button"               data-dp="72550" data-toggle="true" value="Wintergarten" name="button2"/></td>
+     <td><input id="test_3" type="checkbox" data-dp="72550" name="checkbox5">
+                                      <span data-dp="72550" data-timestamp="true"></span> </td>
+  </tr>
+  <tr> 
+    
+     <td><input id="xWZan"  type="checkbox" data-dp=WZan  name="checkbox12"></td>
+     <td><input id="xWZdec" type="checkbox" data-dp=WZdec name="checkbox11"></td>
+     <td><input id="xWZinc" type="checkbox" data-dp=WZinc name="checkbox10"></td>
+     <td>                             <span data-dp=WZzaehler data-digits="0"></span> </td>
+     <td><input type="button"               data-dp="72546" data-toggle="true" value="Wohnzimmer" name="button3"/></td>
+     <td><input id="test_2" type="checkbox" data-dp="72546" name="checkbox9"/>
+                                      <span data-dp="72546" data-timestamp="true"></span> </td>
+  </tr>
+  <tr>   
+     <td><input id="xBRan"  type="checkbox" data-dp=BRan  name="checkbox09"></td>
+     <td><input id="xBRdec" type="checkbox" data-dp=BRdec name="checkbox08"></td>
+     <td><input id="xBRinc" type="checkbox" data-dp=BRinc name="checkbox07"></td>
+     <td>                             <span data-dp=BRzaehler data-digits="0"></span></td>
+     <td><input type="button"               data-dp="72545" data-toggle="true" value="Brenner" name="button4"></td>
+     <td><input id="test_1" type="checkbox" data-dp="72545" name="checkbox013">
+                                      <span data-dp="72545" data-timestamp="true"></span> </td>
+  </tr>
+  <tr> 
+    <td><input id="xWaktiv" type="checkbox" data-dp=WWan name="checkbox17"> </td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td><input type="button"                 data-dp="72545" data-toggle="true" value="Warmwasser" name="button5"/>  </td>
+    <td><input id="test_103" type="checkbox" data-dp=WWanfo name="checkbox037"> 
+	                                   <span data-dp=WWanfo data-timestamp="true"></span> </td> 
+  </tr>
+
+  <tr>
+    <td></td>
+    <td><input id="xthdec" type="checkbox" data-dp=th_dec name="checkbox708"></td>
+    <td><input id="xthinc" type="checkbox" data-dp=th_inc name="checkbox707"></td>
+    <td>                             <span data-dp=t_heiz data-digits="0"></td>
+    <td><b>t_heiz</b></td>
+    <td></td>
+  </tr>
+  
+  </table>
+
+		 <br>
+		 		 
+   <table>
+	
+<tr><td>	   heute                                </td><td><b>Laufzeit</b></td><td>   gestern                                 </td></tr>
+<tr><td><span data-dp=t_x_HK data-digits="0"></span></td><td>Heizkoerper    </td><td> <span data-dp=t_HK data-digits="0"></span></td></tr>
+<tr><td><span data-dp=t_x_WG data-digits="0"></span></td><td>Wintergarten   </td><td> <span data-dp=t_WG data-digits="0"></span></td></tr>
+<tr><td><span data-dp=t_x_WZ data-digits="0"></span></td><td>Wohnzimmer     </td><td> <span data-dp=t_WZ data-digits="0"></span></td></tr>
+<tr><td><span data-dp=t_x_BR data-digits="0"></span></td><td>Brenner        </td><td> <span data-dp=t_BR data-digits="0"></span></td></tr>
+                                                            
+    </table>
+	
+		 <br>
+		 <br>	
+		
+<FORM>
+<INPUT TYPE="button" onClick="history.go(0)" VALUE="Refresh">
+</FORM>		 
+		 <br>	 
+		 <br>
+		 <br>
+	
+	<a href="e2.htm"> e2.htm </a> <br>  <br>
+	<a href="e3.htm"> e3.htm </a> <br>  <br>
+	<a href="e4.htm"> e4.htm </a> <br>  <br>
+	<a href="e5.htm"> e5.htm </a> <br>  <br>
+		   
+<br><br><br><br>2016-12-16
+
+    </body>
+    <script type="text/javascript" src="slimui.min.js"></script>
+</html>
+
