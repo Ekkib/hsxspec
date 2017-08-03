@@ -9,9 +9,9 @@
 
 <body>
              
-<h3 align="center"><br>HSX 01 Heizungssteuerung</br></h3>
 
 <table border="0">
+  <tr> <td colspan="3"><div align="center"> <b>HSX Heizungssteuerung</b> </td> </tr>
   <tr><td><span data-dp="74302" data-digits="1"></span></td><td>Warmwasser   </td><td><span data-dp="74302" data-timestamp="true"></span></td></tr>
   <tr><td><span data-dp="74303" data-digits="1"></span></td><td>Kessel       </td><td><span data-dp="74303" data-timestamp="true"></span></td></tr>
   <tr><td><span data-dp="74304" data-digits="1"></span></td><td>Wohnzimmer   </td><td><span data-dp="74304" data-timestamp="true"></span></td></tr>
@@ -27,12 +27,13 @@
 <table border="0">
   <tr>    
     <td><b>An</b></td> <td><b>Dec</b></td><td><b>Inc</b></td>
-    <td><b>Rest<br>Min</b></td> <td><b> &nbsp;&nbsp;&nbsp;Aggregat </td><td><b>&nbsp;&nbsp;&nbsp; Status </td>    
+    <td><b>Min</b></td> <td><b> &nbsp;&nbsp;&nbsp;Aggregat </td><td><b>&nbsp;&nbsp;&nbsp; Status </td>    
   </tr>
   <tr> 
      <td><input id="xHKan"  type="checkbox" data-dp=HKan  name="checkbox84"></td>
-     <td><input id="xHKdec" type="checkbox" data-dp=HKdec name="checkbox83"></td>   
-     <td><input id="xHKinc" type="checkbox" data-dp=HKinc name="checkbox82"></td>   
+     <td><input             type="button"   data-dp=HKdec data-toggle="true" value="- -" ></td>
+     <td><input             type="button"   data-dp=HKinc data-toggle="true" value="++"  ></td>
+	 
      <td>                             <span data-dp=HKzaehler data-digits="0"></span> </td> 
      <td><input type="button"               data-dp="72549" data-toggle="true" value="Heizkoerper" name="button1"/></td> 
      <td><input id="test_4" type="checkbox" data-dp="72549" name="checkbox81">
@@ -40,8 +41,9 @@
   </tr>
   <tr>   
      <td><input id="xWGan"  type="checkbox" data-dp=WGan  name="checkbox8"></td>
-     <td><input id="xWGdec" type="checkbox" data-dp=WGdec name="checkbox7"></td>
-     <td><input id="xWGinc" type="checkbox" data-dp=WGinc name="checkbox6"></td>  
+     <td><input             type="button"   data-dp=WGdec data-toggle="true" value="- -" ></td>
+     <td><input             type="button"   data-dp=WGinc data-toggle="true" value="++"  ></td>
+	 
      <td>                             <span data-dp=WGzaehler data-digits="0"></span></td>
      <td><input type="button"               data-dp="72550" data-toggle="true" value="Wintergarten" name="button2"/></td>
      <td><input id="test_3" type="checkbox" data-dp="72550" name="checkbox5">
@@ -50,8 +52,8 @@
   <tr> 
     
      <td><input id="xWZan"  type="checkbox" data-dp=WZan  name="checkbox12"></td>
-     <td><input id="xWZdec" type="checkbox" data-dp=WZdec name="checkbox11"></td>
-     <td><input id="xWZinc" type="checkbox" data-dp=WZinc name="checkbox10"></td>
+     <td><input             type="button"   data-dp=WZdec data-toggle="true" value="- -" ></td>
+     <td><input             type="button"   data-dp=WZinc data-toggle="true" value="++"  ></td>
      <td>                             <span data-dp=WZzaehler data-digits="0"></span> </td>
      <td><input type="button"               data-dp="72546" data-toggle="true" value="Wohnzimmer" name="button3"/></td>
      <td><input id="test_2" type="checkbox" data-dp="72546" name="checkbox9"/>
@@ -59,8 +61,8 @@
   </tr>
   <tr>   
      <td><input id="xBRan"  type="checkbox" data-dp=BRan  name="checkbox09"></td>
-     <td><input id="xBRdec" type="checkbox" data-dp=BRdec name="checkbox08"></td>
-     <td><input id="xBRinc" type="checkbox" data-dp=BRinc name="checkbox07"></td>
+     <td><input             type="button"   data-dp=BRdec data-toggle="true" value="- -" ></td>
+     <td><input             type="button"   data-dp=BRinc data-toggle="true" value="++"  ></td>
      <td>                             <span data-dp=BRzaehler data-digits="0"></span></td>
      <td><input type="button"               data-dp="72545" data-toggle="true" value="Brenner" name="button4"></td>
      <td><input id="test_1" type="checkbox" data-dp="72545" name="checkbox013">
@@ -78,10 +80,10 @@
 
   <tr>
     <td></td>
-    <td><input id="xthdec" type="checkbox" data-dp=th_dec name="checkbox708"></td>
-    <td><input id="xthinc" type="checkbox" data-dp=th_inc name="checkbox707"></td>
+    <td><input             type="button"   data-dp=th_dec data-toggle="true" value="- -" ></td>
+    <td><input             type="button"   data-dp=th_inc data-toggle="true" value="++"  ></td>
     <td>                             <span data-dp=t_heiz data-digits="0"></td>
-    <td><b>t_heiz</b></td>
+    <td>Heizdauer</td>
     <td></td>
   </tr>
   
@@ -91,15 +93,62 @@
 		 		 
    <table>
 	
-<tr><td>	   heute                                </td><td><b>Laufzeit</b></td><td>   gestern                                 </td></tr>
-<tr><td><span data-dp=t_x_HK data-digits="0"></span></td><td>Heizkoerper    </td><td> <span data-dp=t_HK data-digits="0"></span></td></tr>
-<tr><td><span data-dp=t_x_WG data-digits="0"></span></td><td>Wintergarten   </td><td> <span data-dp=t_WG data-digits="0"></span></td></tr>
-<tr><td><span data-dp=t_x_WZ data-digits="0"></span></td><td>Wohnzimmer     </td><td> <span data-dp=t_WZ data-digits="0"></span></td></tr>
-<tr><td><span data-dp=t_x_BR data-digits="0"></span></td><td>Brenner        </td><td> <span data-dp=t_BR data-digits="0"></span></td></tr>
-                                                            
-    </table>
+<tr><td>	   heute           </td><td><b>Laufzeit</b> (Minuten)</td><td>   gestern  </td> </tr>
+<tr><td><span data-dp=t_x_HK data-digits="0"></span></td><td>Heizkoerper </td><td> <span data-dp=t_HK data-digits="0"></span></td> </tr>
+<tr><td><span data-dp=t_x_WG data-digits="0"></span></td><td>Wintergarten</td><td> <span data-dp=t_WG data-digits="0"></span></td> </tr>
+<tr><td><span data-dp=t_x_WZ data-digits="0"></span></td><td>Wohnzimmer  </td><td> <span data-dp=t_WZ data-digits="0"></span></td> </tr>
+<tr><td><span data-dp=t_x_BR data-digits="0"></span></td><td>Brenner     </td><td> <span data-dp=t_BR data-digits="0"></span></td> </tr>
+
+<tr><td>	                                       </td><td><b>Temperaturen</b> (Celsius)</td><td>                            </td><td></td> </tr>
+<tr><td><span data-dp=xMinTemp data-digits="2"></span></td><td>Minimum   </td><td> <span data-dp=MinTemp data-digits="2"></span></td></tr>
+<tr><td><span data-dp=xMaxTemp data-digits="2"></span></td><td>Maximum   </td><td> <span data-dp=MaxTemp data-digits="2"></span></td></tr>
+<tr><td><span data-dp=Aufheiz  data-digits="2"></span></td><td>Aufheizung</td><td> <span data-dp=Aufheiz_alt data-digits="2"></span></td> </tr>
+<tr><td><span data-dp=Abkuehl  data-digits="2"></span></td><td>Abkuehlung</td><td> <span data-dp=Abkuehl_alt data-digits="2"></span></td> </tr>
+
+   </table>
 	
 		 <br>
+		 
+<table>
+  <tr><td></td> <td></td> <td></td> 
+      <td><input type="button" data-dp=Rechne data-toggle="true" value="Bestimme Heizfaktor/Heizdauer" ></td> </tr>
+  <tr>
+   <td><input type="button" data-dp=SollMinus data-toggle="true" value="- -" ></td>
+   <td><input type="button" data-dp=SollPlus  data-toggle="true" value="++"  ></td>
+   <td><span data-dp=SollTemp data-digits="1"></span></td>
+   <td>Grad - Vorwahl Wohnzimmertemperatur</td>
+  </tr> 
+  <tr>
+   <td></td>
+   <td></td>
+   <td> <span data-dp=Heizfaktor data-digits="2"></span></td>
+   <td>Heizfaktor = gestrige Brennerlaufzeit [Minuten] / gestrige Aufheizung [Grad]</td>
+  </tr> 
+  
+  <tr>
+   <td></td>
+   <td></td>
+   <td> <span data-dp=t_heizx data-digits="0"></span></td>
+   <td>Minuten - extrapolierte Heizdauer heute</td>
+  </tr> 
+  
+  <tr>
+   <td><input type="button" data-dp=VWdec data-toggle="true" value="- -" ></td>
+   <td><input type="button" data-dp=VWinc data-toggle="true" value="++"  ></td>
+   <td>60</td>
+   <td>Grad - Warmwasser-Wärmetauscher </td>
+  </tr> 
+  
+  <tr>
+   <td>  <input type="checkbox" data-dp=regel_an> </td>
+   <td></td>
+   <td></td>
+   <td>Regelung scharf </td>
+  </tr> 
+  
+</table>		 
+		 <br>	
+		 <br>	
 		 <br>	
 		
 <FORM>
@@ -113,8 +162,23 @@
 	<a href="e3.htm"> e3.htm </a> <br>  <br>
 	<a href="e4.htm"> e4.htm </a> <br>  <br>
 	<a href="e5.htm"> e5.htm </a> <br>  <br>
+	
+Leider gibt es mit der Typanlegung der "++" und "- -" Knoepfe manchmal Probleme. 
+Sollte dies der Fall sein, alle folgenden Checkboxen einmalig anklicken. An
+einer eleganteren Loesung wird gearbeitet, ;-)
+<br>
+<input  type="checkbox" data-dp=HKdec>
+<input  type="checkbox" data-dp=HKinc>
+<input  type="checkbox" data-dp=WGdec>
+<input  type="checkbox" data-dp=WGinc>
+<input  type="checkbox" data-dp=WZdec>
+<input  type="checkbox" data-dp=WZinc>
+<input  type="checkbox" data-dp=BRdec>
+<input  type="checkbox" data-dp=BRinc>
+<input  type="checkbox" data-dp=th_dec>
+<input  type="checkbox" data-dp=th_inc>
 		   
-<br><br><br><br>2016-12-22
+<br><br><br><br><b>2017-08-02, email :  ekkehard@pofahl.de</b>
 
     </body>
     <script type="text/javascript" src="slimui.min.js"></script>
