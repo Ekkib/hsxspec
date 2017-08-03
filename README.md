@@ -1,7 +1,7 @@
 # hsxspec
 HSX Spezifikation
 
-Dieses Programm (geschrieben in Lazarus) dient zunächst allein dem Zweck, eine Benutzerschnittstelle für die 
+Dieses Programm (geschrieben in Lazarus) dient zunächst nur allein dem Zweck, eine Benutzerschnittstelle für die 
 Heizungssteuerung HSX zu entwickeln und zu demonstrieren. Ein "rapid prototype" halt.
 
 Dokumentation des HSX Projektes :  https://sites.google.com/site/raspihs1/
@@ -24,7 +24,7 @@ Ziel ist es, die Desktop Oberfläche dieses Programmes gegen eine Smartphone-kom
 
 
 
-Copyright (c) 2006-2016 Ekkehard Pofahl
+Copyright (c) 2006-2017 Ekkehard Pofahl
 
 # Lizenz: CC BY-NC 3.0
 
