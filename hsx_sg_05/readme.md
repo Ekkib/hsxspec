@@ -2,28 +2,25 @@
 
 
 #      HSX Programme installieren   
-### erstellt : 2016-05-12, zuletzt geaendert : Datum am Dateiende
+### zuletzt geaendert : Datum am Dateiende
 	
-In diesem Verzeichnis sollten sich die folgenden Dateien befinden :
+In diesem Verzeichnis befinden sich die folgenden Dateien  :
 
-1. readme_1st.md - diese Datei  
-1. adapter-owfs.json - owfs Einstellungen, incl. 1 Wire Adressen  
-1. adapter-owfs_pretty.json  
-1. dashui-views.json         - e1 Gluehbirnen-Maske  
-1. dashui-views_pretty.json  
-1. owfs.js - korrigierter .js owfs Treiber  (Version : 0.3.6 [07.06.2016])
-1. xx.prg                     - Steuerungsprogramme  
-1. e_nn.htm                    - Steuerungs - Masken
-1. Konfig.txt
+1. readme.md - diese Datei  
+1. adapter-owfs.json        - owfs Adaptereinstellungen, incl. 1-Wire Adressen  
+1. adapter-owfs_pretty.json - lesbarer JSON
+1. dashui-views.json        - e1 Gluehbirnen-Maske (Warmwasser) 
+1. dashui-views_pretty.json - lesbarer JSON
+1. owfs.js                  - aktueller .js owfs Adapter Treiber
+1. *.prg                    - Steuerungsprogramme  
+1. e*.htm                   - Steuerungs - Masken
+1. Konfig.txt               - Info Datei
 
-Die .json Dateien mit "pretty" im Namen enthalten den gleichen Inhalt wie die 
-Dateien ohne "pretty". Sie sind halt nur lesbar formatiert. 
-Der Versuch, ob CCU.IO auch nett formatierte Dateien schluckt, steht aus.
-
-*Beschreibung :*  
-   https://sites.google.com/site/raspihs1/hsx-interna/hsx_software/hsx_sg_0_5
-
-Sehr hilfreich bei den Kopier-Operationen zum Raspi ist WinSCP. 
+**Beschreibung :**  
+  
+  https://sites.google.com/site/raspihs1/hsx-interna/hsx_software/hsx-sg-0-4
+   
+Sehr hilfreich bei den Kopier-Operationen zum Raspi ist **WinSCP**. 
 Siehe dazu die Bemerkungen unter :
 
    https://sites.google.com/site/raspihs1/home/raspi-aufsetzen
@@ -66,7 +63,6 @@ Aufruf mit : http://hsx01:8080/slimui/e2.htm
 
 SlimUI Masken sind sehr schlank. Der Aufruf klappt mobil auch mit der 
 Verbindung "E" (Weniger als "3G") ohne Probleme.
-Spielmaterial : ex.htm	.
 	
 
 Aktuelle owfs Adapter Einstellungen
@@ -89,10 +85,10 @@ Leerzeichen und so etwas.
 Die Adapter Einstellung muss gemaess "Konfig.txt" angepasst werden ! 
    
    
-Aktueller owfs Adapter
-----------------------
+Aktueller owfs Adaptertreiber
+-----------------------------
 
-Bei einer CCU.IO Version 1.0.52 oder aelter sollte man den owfs Adapter austauschen. 
+Bei einer CCU.IO Version 1.0.52 oder aelter sollte man den owfs Adaptertreiber austauschen. 
 Dazu die Datei
 
        owfs.js
@@ -103,8 +99,7 @@ in das Verzeichnis
 
 kopieren und damit die dort vorhandene Datei ueberschreiben.
 
-
-Viel Glueck !
+**Viel Glueck !**
 
 mailto:Ekkehard@Pofahl.de 
 
@@ -118,4 +113,4 @@ Editiert am :
 
 15:21 16.12.2016
 
-16:36 02.08.2017
+16:36 15.08.2017

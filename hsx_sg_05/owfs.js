@@ -1,24 +1,24 @@
-/**
- *   CCU.IO OWFS Adapter - owfs.js
+﻿/**
+ *   CCU.IO OWFS Adapter :  /opt/ccu.io/adapter/owfs/owfs.js
  *
- *   Initial Version : 05. Mar 2014
- *   Current Version : 0.3.6 [07.06.2016]
- *   
- *   Change Notes:
- *   - Initial Version 0.2.1 
- *   - Version 0.3.0 (Bluefox) Support of multiple IPs and up to 50 sensors per server
- *   - Version 0.3.1 (Bluefox) Possible write and use new adapter module
- *   - Version 0.3.2 (Giermann) Shorter channel name and identify/skip read errors
- *   - Version 0.3.3 (Giermann) Fix write support, avoid write after each read
- *   - Version 0.3.4 (Giermann) Continuous reading (interval<0) and new configs: unit, dir [r|w|rw] (direction: read/write only)
- *   - Version 0.3.5 (Giermann) Simultaneous reading for temperature
- *   - Version 0.3.6 (Giermann) added log level config and number types
+ *   Version Change Notes:
+ *   - 0.4.1 2017-08-17 (Giermann) skipping all temperature readings of exactly 85
+ *   - 0.4.0 2017-08-16 (Ekkehard) Kommentare bereinigt
+ *   - 0.3.6    (Giermann) added log level config and number types
+ *   - 0.3.5    (Giermann) Simultaneous reading for temperature
+ *   - 0.3.4    (Giermann) Continuous reading (interval<0) and new configs: unit, dir [r|w|rw] (direction: read/write only)
+ *   - 0.3.3    (Giermann) Fix write support, avoid write after each read
+ *   - 0.3.2    (Giermann) Shorter channel name and identify/skip read errors
+ *   - 0.3.1    (Bluefox) Possible write and use new adapter module
+ *   - 0.3.0    (Bluefox) Support of multiple IPs and up to 50 sensors per server
+ *   - 0.2.1 2014-03-05 (Muenk) Initial
  *
  *   Authors: 
- *   Ralf Muenk [muenk@getcom.de]
- *   (c) getcom IT Services
- *   Eisbaeeer  [Eisbaeeer@gmail.com]
- *   Bluefox (dogafox@gmail.com)
+ *   Ralf Muenk      - muenk@getcom.de , (c) getcom IT Services : Initial 
+ *   Eisbaeeer       - Eisbaeeer@gmail.com]
+ *   Bluefox         - dogafox@gmail.com
+ *   Sven Giermann   - sven.giermann@gmail.com
+ *   Ekkehard Pofahl - ekkehard@pofahl.de
  *     
  *
  *   This is a part of the iXmaster project started in 2014.
@@ -59,24 +59,28 @@ var id          = 1;
 var rootId      = adapter.firstId;
 var channelsIDs = [];
 
-function writeWire(ipID, wireID, value) {
-    if (adapter.settings && adapter.settings.IPs["_" + ipID].wire["_" + ipID] && adapter.settings.IPs["_" + ipID].con) {
+function writeWire(ipID, wireID, value, retries) {
+    if (adapter.settings && adapter.settings.IPs["_" + ipID].wire["_" + wireID] && adapter.settings.IPs["_" + ipID].con) {
         var path = "/" + adapter.settings.IPs["_" + ipID].wire["_" + wireID].id + "/" + (adapter.settings.IPs["_" + ipID].wire["_" + wireID].property || "temperature");
         if (adapter.settings.IPs["_" + ipID].wire["_" + wireID].dir != "r") adapter.settings.IPs["_" + ipID].con.write(
             path,
             value,
             function(err,result) {
                 if (err) {
-                    adapter.log(adapter.settings.IPs["_" + ipID].errorLevelWrite || adapter.settings.errorLevelWrite,
-                        "error writing '" + this.p + "': " + err.msg);
+                    if (this.retr < 5) {
+                        setTimeout(writeWire, (adapter.settings.owserverTimeout || 3000), this.ip, this.wire, this.val, this.retr);
+                    } else {
+                        adapter.log(adapter.settings.IPs["_" + this.ip].errorLevelWrite || adapter.settings.errorLevelWrite,
+                            "error writing '" + this.p + "': " + err.msg);
+                    }
                 }
-            }.bind( {p: path} )
+            }.bind( {p: path, ip: ipID, wire: wireID, val: value, retr: ((retries || 0) + 1)} )
         );
     }
 }
 
 function readWire(ipID, wireID, loop) {
-    if (adapter.settings && adapter.settings.IPs["_" + ipID].wire["_" + ipID] && adapter.settings.IPs["_" + ipID].con) {
+    if (adapter.settings && adapter.settings.IPs["_" + ipID].wire["_" + wireID] && adapter.settings.IPs["_" + ipID].con) {
         var path = "/" + adapter.settings.IPs["_" + ipID].wire["_" + wireID].id + "/" + (adapter.settings.IPs["_" + ipID].wire["_" + wireID].property || "temperature");
         if (adapter.settings.IPs["_" + ipID].wire["_" + wireID].dir != "w") adapter.settings.IPs["_" + ipID].con.read(path,
             function(err,result) {
@@ -88,6 +92,9 @@ function readWire(ipID, wireID, loop) {
                         if (isNaN(parseFloat(result))) {
                             adapter.log(adapter.settings.IPs["_" + this.ip].errorLevelNumber || adapter.settings.errorLevelNumber,
                                 "skip invalid value for id " + id + ": " + result);
+                        } else if ((parseFloat(result) == 85) && ((adapter.settings.IPs["_" + ipID].wire["_" + wireID].property || "temperature") == "temperature")) {
+                            adapter.log(adapter.settings.IPs["_" + this.ip].errorLevelNumber || adapter.settings.errorLevelNumber,
+                                "skip 85 degree for id " + id + ": " + result);
                         } else if (adapter.settings.IPs["_" + this.ip].wire["_" + this.wire].maxChange) {
                             // async check for delta and return without setting DP
                             adapter.getState(adapter.settings.IPs["_" + this.ip].channelId + this.wire, function (id, val) {
@@ -120,8 +127,8 @@ function readWire(ipID, wireID, loop) {
                         }
                     }
                 }
-                // prefer setTimeout for next read (wait 10s in case of error)
-                if (this.doLoop) setTimeout(readWire, (err ? 10000 : 0), this.ip, this.wire, true);
+                // prefer setTimeout for next read (wait in case of error)
+                if (this.doLoop) setTimeout(readWire, (err ? (adapter.settings.owserverTimeout || 3000) : 100), this.ip, this.wire, true);
             }.bind( {p: path, ip: ipID, wire: wireID, doLoop: loop } )
         );
     }
@@ -209,4 +216,3 @@ function initOWFS (){
 }
 
 initOWFS();
-
