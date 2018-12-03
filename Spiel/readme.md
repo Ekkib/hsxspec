@@ -1,7 +1,7 @@
 .LOG
 <Ctrl-Shift m>
 
-Lokale Aenderung
+Lokale Aenderung - Aenderung Master 16:30 h
 
 #      Dateien zum Spielen   
 ### zuletzt geaendert : Datum am Dateiende
