@@ -1,5 +1,5 @@
 .LOG
-
+<Ctrl-Shift m>
 
 #      Dateien zum Spielen   
 ### zuletzt geaendert : Datum am Dateiende
