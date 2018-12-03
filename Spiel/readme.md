@@ -1,6 +1,8 @@
 .LOG
 <Ctrl-Shift m>
 
+Jetzt gibt es einige Unterschiede
+
 #      Dateien zum Spielen   
 ### zuletzt geaendert : Datum am Dateiende
 
