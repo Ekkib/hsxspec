@@ -1,16 +1,16 @@
 .LOG
 <Ctrl-Shift m>
 
-Jetzt gibt es einige Unterschiede
+Lokale Aenderung
 
 #      Dateien zum Spielen   
 ### zuletzt geaendert : Datum am Dateiende
 
 It's very easy to make some words **bold** and other words *italic* with Markdown. You can even [link to Google!](http://google.com)
 
-# This is an <h1> tag
-## This is an <h2> tag
-###### This is an <h6> tag
+# This is an h1 tag
+## This is an h2 tag
+###### This is an h6 tag
 
 *This text will be italic*
 _This will also be italic_
