@@ -6,7 +6,7 @@ Lokale Aenderung
 #      Dateien zum Spielen   
 ### zuletzt geaendert : Datum am Dateiende
 
-It's very  easy to make some words **bold** and other words *italic* with Markdown. You can even [link to Google!](http://google.com)
+It's very  easy to make even only some words **bold** and other words *italic* with Markdown. You can even [link to Google!](http://google.com)
 
 "fritzbox dvbc freischalten"
 
@@ -121,7 +121,7 @@ kopieren und damit die dort vorhandene Datei ueberschreiben.
 
 mailto:Ekkehard@Pofahl.de
 
-**Rueckmeldungen und Korrekturen sehr willkommen !**
+**Rueckmeldungen sehr willkommen !**
 
 Infos zu Markdown : https://de.wikipedia.org/wiki/Markdown
 
