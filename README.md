@@ -12,6 +12,8 @@ Wenn die Nerven durchgehen wird vielleicht aus dieser Spezifikation ja tatsächl
 
 Ziel ist es, die Desktop Oberfläche dieses Programmes gegen eine Smartphone-kompatible WEB-Bedienung auszutauschen.
 
+In zwei Unterorndern sind lauffähige Programme und Masken für die Raspi CCUIO Umgebung abgelegt.
+
 # Changelog
 
 # 20160208
