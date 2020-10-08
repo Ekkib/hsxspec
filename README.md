@@ -4,7 +4,7 @@ HSX Spezifikation
 Dieses Programm (geschrieben in Lazarus) dient zunächst nur allein dem Zweck, eine Benutzerschnittstelle für die 
 Heizungssteuerung HSX zu entwickeln und zu demonstrieren. Ein "rapid prototype" halt.
 
-Dokumentation des HSX Projektes :  https://sites.google.com/site/raspihs1/
+Dokumentation des HSX Projektes : [HSX Projekt] (https://sites.google.com/site/raspihs1/)
 
 Dort gibt es auch auch Links zu Windows und Raspi Executables dieser Quellen, im Verzeichnis "Spezifikation".
 
