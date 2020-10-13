@@ -8,7 +8,7 @@ Dokumentation des HSX Projektes : [HSX Projekt](https://sites.google.com/site/ra
 
 Dort gibt es auch auch Links zu Windows und Raspi Executables dieser Quellen, im Verzeichnis "Spezifikation".
 
-Wenn die Nerven durchgehen wird vielleicht aus dieser Spezifikation ja tatsächlich irgendwann ein lauffähiges Desktop-Programm. In dem Prototyp laufen die Zeiten, die Aggregate werden programmgesteuert geschaltet. Es fehlt nur die Anbindung an die Ausgaben und an den owserver (per fphttpclient, HttpGetText). Wer an den Baustellen des Programms (davon gibt es einige) mitarbeiten will, möge sich bitte melden. Abstimmung vermeidet parallele Entwicklungen, ;-) .
+Wenn die Nerven durchgehen wird vielleicht aus dieser Spezifikation ja tatsächlich irgendwann ein lauffähiges Desktop-Programm. In dem Prototyp laufen die Zeiten, die Aggregate werden programmgesteuert geschaltet. Es fehlt nur die Anbindung an die Ausgaben und an den owserver (per fphttpclient, HttpGetText).
 
 Ziel ist es, die Desktop Oberfläche dieses Programmes gegen eine Smartphone-kompatible WEB-Bedienung auszutauschen.
 
